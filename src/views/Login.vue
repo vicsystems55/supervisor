@@ -213,7 +213,7 @@ export default {
     imgUrl() {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.sideImg = require('@/assets/images/pages/login-v2-dark.svg')
+        this.sideImg = require('@/assets/images/pages/4786.jpg')
         return this.sideImg
       }
       return this.sideImg
