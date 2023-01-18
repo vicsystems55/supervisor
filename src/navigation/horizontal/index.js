@@ -9,27 +9,13 @@ export default [
     header: 'Programme',
     icon: 'FileIcon',
     title: 'Programme',
-    route: '/',
+    route: 'programmes',
   },
   {
     header: 'Contracts',
     icon: 'FileIcon',
     title: 'Contracts',
-    route: '/',
-  },
-
-  {
-    header: 'Lots',
-    icon: 'FileIcon',
-    title: 'Lots',
-    route: '/',
-  },
-
-  {
-    header: 'Sites',
-    icon: 'FileIcon',
-    title: 'Sites',
-    route: '/',
+    route: 'contracts',
   },
 
   {
@@ -43,7 +29,7 @@ export default [
         icon: 'HomeIcon',
       },
       {
-        title: 'Lot Report',
+        title: 'Lot Reports',
         route: 'second-page',
         icon: 'FileIcon',
       },
@@ -54,6 +40,12 @@ export default [
     icon: 'FileIcon',
     title: 'Valuation',
     route: '/',
+  },
+  {
+    header: 'User Management',
+    icon: 'FileIcon',
+    title: 'User Management',
+    route: 'users',
   },
   {
     header: 'Pages',

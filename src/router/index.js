@@ -25,6 +25,107 @@ const router = new VueRouter({
       },
     },
     {
+      path: '/programmes',
+      name: 'programmes',
+      component: () => import('@/views/Programmes.vue'),
+      meta: {
+        pageTitle: 'Programmes',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: true,
+          },
+          {
+            text: 'Programmes',
+            active: false,
+          },
+        ],
+      },
+    },
+    {
+      path: '/contracts',
+      name: 'contracts',
+      component: () => import('@/views/Contracts.vue'),
+      meta: {
+        pageTitle: 'Contracts',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: true,
+          },
+          {
+            text: 'Contracts',
+            active: false,
+          },
+        ],
+      },
+    },
+
+    {
+      path: '/users',
+      name: 'users',
+      component: () => import('@/views/Users.vue'),
+      meta: {
+        pageTitle: 'Users',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: true,
+          },
+          {
+            text: 'Users',
+            active: false,
+          },
+        ],
+      },
+    },
+
+    {
+      path: '/user/:1',
+      name: 'user',
+      component: () => import('@/views/User.vue'),
+      meta: {
+        pageTitle: 'User',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: true,
+          },
+          {
+            text: 'Users',
+            active: true,
+          },
+          {
+            text: 'User',
+            active: false,
+          },
+        ],
+      },
+    },
+
+    {
+      path: '/contract/:id',
+      name: 'contract',
+      component: () => import('@/views/Contract.vue'),
+      meta: {
+        pageTitle: 'Contract',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: true,
+          },
+          {
+            text: 'Contracts',
+            active: true,
+          },
+          {
+            text: 'Contract',
+            active: false,
+          },
+        ],
+      },
+    },
+    {
       path: '/second-page',
       name: 'second-page',
       component: () => import('@/views/SecondPage.vue'),

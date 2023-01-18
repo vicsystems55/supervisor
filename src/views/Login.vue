@@ -14,9 +14,9 @@
       <!-- Left Text-->
       <b-col
         lg="8"
-        class="d-none d-lg-flex align-items-center p-5"
+        class="d-none d-lg-flex align-items-center p-5 bg-white"
       >
-        <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+        <div class="w-100 d-lg-flex align-items-center justify-content-center px-5 bg-white">
           <b-img
             fluid
             :src="imgUrl"
@@ -200,7 +200,7 @@ export default {
       status: '',
       password: '',
       userEmail: '',
-      sideImg: require('@/assets/images/pages/login-v2.svg'),
+      sideImg: require('@/assets/images/pages/4786.jpg'),
       // validation rulesimport store from '@/store/index'
       required,
       email,
