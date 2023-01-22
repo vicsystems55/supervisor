@@ -3,7 +3,7 @@ export default [
     header: 'Home',
     icon: 'FileIcon',
     title: 'Home',
-    route: '/',
+    route: 'home',
   },
   {
     header: 'Programme',
@@ -16,6 +16,12 @@ export default [
     icon: 'FileIcon',
     title: 'Contracts',
     route: 'contracts',
+  },
+  {
+    header: 'Sites',
+    icon: 'FileIcon',
+    title: 'Sites',
+    route: 'sites',
   },
 
   {

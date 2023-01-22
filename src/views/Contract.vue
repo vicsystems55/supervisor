@@ -28,7 +28,7 @@
               <td>9</td>
               <td>
                 <router-link
-                  :to="'/contract'"
+                  :to="'/sites'"
                   class="btn btn-sm btn-primary"
                 >
                   view sites</router-link>
@@ -46,7 +46,7 @@
               <td>5</td>
               <td>
                 <router-link
-                  :to="'/contract'"
+                  :to="'/sites'"
                   class="btn btn-sm btn-primary"
                 >
                   view sites</router-link>
@@ -57,9 +57,9 @@
       </div>
     </div>
 
-    <h6>Contractor Details</h6>
+    <!-- <h6>Contractor Details</h6> -->
 
-<div class="card">
+<div class="card d-none">
   <div class="card-body">
     <h6>Contract Lots</h6>
     <table class="table">
@@ -67,7 +67,6 @@
         <tr>
           <th>S/N</th>
           <th>Contractor Name</th>
-         
           <th></th>
         </tr>
       </thead>

@@ -43,6 +43,72 @@ const router = new VueRouter({
       },
     },
     {
+      path: '/sites',
+      name: 'sites',
+      component: () => import('@/views/Sites.vue'),
+      meta: {
+        pageTitle: 'Sites',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: false,
+          },
+          {
+            text: 'Contracts',
+            active: false,
+          },
+          {
+            text: 'Contract',
+            active: false,
+          },
+          {
+            text: 'Lot',
+            active: false,
+          },
+          {
+            text: 'Sites',
+            active: true,
+          },
+        ],
+      },
+    },
+
+    {
+      path: '/site/:1',
+      name: 'sites',
+      component: () => import('@/views/Site.vue'),
+      meta: {
+        pageTitle: 'Sites',
+        breadcrumb: [
+          {
+            text: 'Home',
+            active: false,
+          },
+          {
+            text: 'Contracts',
+            active: false,
+          },
+          {
+            text: 'Contract',
+            active: false,
+          },
+          {
+            text: 'Lot',
+            active: false,
+          },
+          {
+            text: 'Sites',
+            active: true,
+          },
+
+          {
+            text: 'Site',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
       path: '/contracts',
       name: 'contracts',
       component: () => import('@/views/Contracts.vue'),
