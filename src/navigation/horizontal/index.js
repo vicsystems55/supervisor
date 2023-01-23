@@ -31,7 +31,7 @@ export default [
     children: [
       {
         title: 'Contract Reports',
-        route: 'home',
+        route: 'reports',
         icon: 'HomeIcon',
       },
       {
@@ -53,20 +53,20 @@ export default [
     title: 'User Management',
     route: 'users',
   },
-  {
-    header: 'Pages',
-    icon: 'FileIcon',
-    children: [
-      {
-        title: 'Home',
-        route: 'home',
-        icon: 'HomeIcon',
-      },
-      {
-        title: 'Second Page',
-        route: 'second-page',
-        icon: 'FileIcon',
-      },
-    ],
-  },
+  // {
+  //   header: 'Pages',
+  //   icon: 'FileIcon',
+  //   children: [
+  //     {
+  //       title: 'Home',
+  //       route: 'home',
+  //       icon: 'HomeIcon',
+  //     },
+  //     {
+  //       title: 'Second Page',
+  //       route: 'second-page',
+  //       icon: 'FileIcon',
+  //     },
+  //   ],
+  // },
 ]

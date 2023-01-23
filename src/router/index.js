@@ -75,7 +75,7 @@ const router = new VueRouter({
 
     {
       path: '/site/:1',
-      name: 'sites',
+      name: 'site',
       component: () => import('@/views/Site.vue'),
       meta: {
         pageTitle: 'Sites',
