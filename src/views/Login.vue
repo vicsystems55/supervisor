@@ -114,9 +114,17 @@
 
               <div class="form-group">
                 <label for="">Supervision Firm:</label>
-                <select name="" id="" class="form-control">
-                  <option value="">Robilor</option>
-                  <option value="">Sourcewater</option>
+                <select
+                  id=""
+                  name=""
+                  class="form-control"
+                >
+                  <option value="">
+                    Robilor
+                  </option>
+                  <option value="">
+                    Sourcewater
+                  </option>
 
                 </select>
               </div>
@@ -137,7 +145,7 @@
                 type="submit"
                 variant="primary"
                 block
-                @click="validationForm"
+                @click="login()"
               >
                 Sign in
               </b-button>
@@ -152,10 +160,9 @@
           </b-card-text>
 
           <!-- divider -->
-          
 
           <!-- social buttons -->
-        
+
         </b-col>
       </b-col>
     <!-- /Login-->
@@ -174,6 +181,8 @@ import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import axios from 'axios'
+
 
 export default {
   components: {
@@ -233,6 +242,26 @@ export default {
           })
         }
       })
+    },
+    login() {
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('UserName', this.userEmail)
+
+      bodyFormData.append('UserPassword', this.password)
+      
+      axios({
+        url: 'https://jsonplaceholder.typicode.com/users',
+        method: 'get',
+
+      }).then(response => {
+        console.log(response)
+        alert('got it')
+      }).catch(err => {
+        alert(err)
+      })
+
+      alert(`${this.userEmail}  ${this.password}`)
     },
   },
 }
