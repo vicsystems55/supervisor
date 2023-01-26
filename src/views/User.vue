@@ -11,17 +11,18 @@
           <div class="col-md-5 text-center">
 
             <img
-            style="width: 150px; height: 150px; "
-            class="rounded"
+              style="width: 150px; height: 150px; "
+              class="rounded"
               :src="sideImg"
               alt=""
             >
 
             <div class="c py-2">
 
-                <button class="btn btn-primary btn-sm">upload</button>
+              <button class="btn btn-primary btn-sm">
+                upload
+              </button>
             </div>
-
 
           </div>
 
@@ -31,49 +32,74 @@
               <thead>
                 <tr>
                   <th>Fullname</th>
-                  <td>Mr. Dipo</td>
+                  <td>{{ user.userFullName }}</td>
                 </tr>
                 <tr>
                   <th>Email</th>
-                  <td>dipo@tpsapp.net</td>
+                  <td>{{ user.userEmail }}</td>
                 </tr>
                 <tr>
                   <th>Username</th>
-                  <td>dipo@tpsapp.net</td>
+                  <td>{{ user.userName }}</td>
                 </tr>
                 <tr>
                   <th>Acitve Role</th>
-                  <td>Project Manager</td>
+                  <td>pending</td>
                 </tr>
-                <tr>
-                  <th>Fullname</th>
-                  <td>Mr. Dipo</td>
-                </tr>
+
               </thead>
             </table>
 
-            <h6 class="pt-3">Select Role</h6>
+            <h6 class="pt-3">
+              Select Role
+            </h6>
 
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                <label class="form-check-label" for="defaultCheck1">
-                   Project Admin
-                </label>
-                </div>
+              <input
+                id="defaultCheck1"
+                class="form-check-input"
+                type="checkbox"
+                value=""
+              >
+              <label
+                class="form-check-label"
+                for="defaultCheck1"
+              >
+                Project Admin
+              </label>
+            </div>
 
-                <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                <label class="form-check-label" for="defaultCheck1">
-                   Field Officer
-                </label>
-                </div>
+            <div class="form-check">
+              <input
+                id="defaultCheck1"
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                checked
+              >
+              <label
+                class="form-check-label"
+                for="defaultCheck1"
+              >
+                Field Officer
+              </label>
+            </div>
 
-                <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                <label class="form-check-label" for="defaultCheck1">
-                   Super Admin
-                </label>
-                </div>
+            <div class="form-check">
+              <input
+                id="defaultCheck1"
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                checked
+              >
+              <label
+                class="form-check-label"
+                for="defaultCheck1"
+              >
+                Super Admin
+              </label>
+            </div>
 
           </div>
 
@@ -98,7 +124,11 @@ export default {
   data() {
     return {
       sideImg: require('@/assets/images/pages/4786.jpg'),
+      user: '',
     }
+  },
+  mounted() {
+    this.getUser()
   },
   methods: {
     getApi() {
@@ -108,7 +138,23 @@ export default {
 
       }).then(response => {
         console.log(response)
-        alert('got it')
+        // alert('got it')
+      }).catch(err => {
+        alert(err)
+      })
+    },
+
+    getUser() {
+
+      // alert(this.$route.params.id)
+      axios({
+        url: `http://api.tpsapp.net/api/UserProfile/${this.$route.params.id}`,
+        method: 'get',
+
+      }).then(response => {
+        console.log(response)
+        this.user = response.data
+        // alert('got it')
       }).catch(err => {
         alert(err)
       })

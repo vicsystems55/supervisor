@@ -147,7 +147,7 @@ const router = new VueRouter({
     },
 
     {
-      path: '/user/:1',
+      path: '/user/:id',
       name: 'user',
       component: () => import('@/views/User.vue'),
       meta: {

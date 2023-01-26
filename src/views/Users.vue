@@ -193,12 +193,13 @@ export default {
     },
     getUsers() {
       axios({
-        url: 'http://admin.tpsapp.net/api/UserProfile',
+        url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'get',
 
       }).then(response => {
         console.log(response)
-        this.users = response.data
+        this.users = response.data[0].registeredUsers
+
         // alert('got it')
       }).catch(err => {
         alert(err)
@@ -222,7 +223,7 @@ export default {
       bodyFormData.append('UserPassword', this.Address)
 
       axios({
-        url: 'http://admin.tpsapp.net/api/UserProfile',
+        url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
         data: bodyFormData,
 
