@@ -61,11 +61,11 @@
                 <validation-provider
                   #default="{ errors }"
                   name="Email"
-                  rules="required|email"
+                  rules="required"
                 >
                   <b-form-input
                     id="login-email"
-                    v-model="userEmail"
+                    v-model="userName"
                     :state="errors.length > 0 ? false:null"
                     name="login-email"
                     placeholder="john@example.com"
@@ -116,14 +116,20 @@
                 <label for="">Supervision Firm:</label>
                 <select
                   id=""
+                  v-model="selFirmID"
                   name=""
                   class="form-control"
                 >
-                  <option v-for="" value="">
-                    Robilor
-                  </option>
                   <option value="">
-                    Sourcewater
+                    --Select Supervising Firm--
+                  </option>
+                  <option
+                    v-for="firm in firms"
+                    :key="firm.id"
+                    :value="firm.supervisingFirmID"
+                  >
+                    {{ firm.supervisingFirmName
+                    }}
                   </option>
 
                 </select>
@@ -183,7 +189,6 @@ import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import axios from 'axios'
 
-
 export default {
   components: {
     BRow,
@@ -208,8 +213,9 @@ export default {
     return {
       status: '',
       password: '',
-      userEmail: '',
+      userName: '',
       firms: [],
+      selFirmID: '',
       sideImg: require('@/assets/images/pages/4786.jpg'),
       // validation rulesimport store from '@/store/index'
       required,
@@ -248,29 +254,47 @@ export default {
       })
     },
     login() {
+
+      alert(this.userName)
+      alert(this.password)
+
+      alert(this.selFirmID)
+
       const bodyFormData = new FormData()
 
-      bodyFormData.append('UserName', this.userEmail)
+      bodyFormData.append('UserName', this.userName)
 
       bodyFormData.append('UserPassword', this.password)
-      
+
+      bodyFormData.append('SupervisingFirmID ', this.selFirmID)
+
+      bodyFormData.append('RequestType', 4)
+
       axios({
-        url: 'https://jsonplaceholder.typicode.com/users',
-        method: 'get',
+        url: 'https://api.tpsapp.net/api/UserProfile',
+        method: 'post',
+        data: bodyFormData,
 
       }).then(response => {
         console.log(response)
-        alert('got it')
+
+        localStorage.setItem('supervisingFirm', response.data.newUser.supervisingFirm)
+        localStorage.setItem('userID', response.data.newUser.userID)
+        localStorage.setItem('userFullName', response.data.newUser.userFullName)
+        localStorage.setItem('userEmail', response.data.newUser.userEmail)
+        localStorage.setItem('defaultRole', response.data.newUser.defaultRole)
+
+
+        alert('Credentials verified')
+
+        return this.$router.push('/')
       }).catch(err => {
         alert(err)
+        return this.$router.push('/login')
       })
-
-      alert(`${this.userEmail}  ${this.password}`)
     },
 
     getFirms() {
-   
-      
       axios({
         url: 'https://api.tpsapp.net/api/SupervisingFirm',
         method: 'get',

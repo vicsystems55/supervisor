@@ -208,6 +208,7 @@ export default {
 
     registerUser() {
       this.loading = true
+      
       const bodyFormData = new FormData()
 
       bodyFormData.append('UserName', this.UserName)
@@ -220,7 +221,7 @@ export default {
 
       bodyFormData.append('Address', this.Address)
 
-      bodyFormData.append('UserPassword', this.Address)
+      bodyFormData.append('UserPassword', this.UserPassword)
 
       bodyFormData.append('RequestType', 3)
 
