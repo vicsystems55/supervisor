@@ -30,9 +30,11 @@
         <template #button-content>
           <div class="d-sm-flex d-none user-nav">
             <p class="user-name font-weight-bolder mb-0">
-              John Doe
+              {{userFullName}}
             </p>
-            <span class="user-status">Admin</span>
+            <span class="user-status">{{ firm.supervisingFirmName }}</span>
+       
+
           </div>
           <b-avatar
             size="40"
@@ -88,7 +90,7 @@
             icon="LogOutIcon"
             class="mr-50"
           />
-          <span>Logout</span>
+        <router-link :to="'/login'">  <span>Logout</span></router-link>
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -100,6 +102,8 @@ import {
   BLink, BNavbarNav, BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
 } from 'bootstrap-vue'
 import DarkToggler from '@core/layouts/components/app-navbar/components/DarkToggler.vue'
+import axios from 'axios'
+
 
 export default {
   components: {
@@ -117,6 +121,51 @@ export default {
     toggleVerticalMenuActive: {
       type: Function,
       default: () => {},
+    },
+  },
+
+  data() {
+    return {
+      userData: '',
+      supervisingFirm: '',
+      userID: '',
+      userFullName: '',
+      userEmail: '',
+      defaultRole: '',
+      firm: '',
+    }
+  },
+
+  mounted() {
+    this.getUserData()
+    this.getFirm()
+  },
+
+  methods: {
+    getUserData() {
+      this.supervisingFirm = localStorage.getItem('supervisingFirm')
+      this.userID = localStorage.getItem('userID')
+      this.userFullName = localStorage.getItem('userFullName')
+      this.userEmail = localStorage.getItem('userEmail')
+      this.defaultRole = localStorage.getItem('defaultRole')
+    },
+
+    getFirm() {
+
+      // alert(this.supervisingFirm)
+      axios({
+        url: `https://api.tpsapp.net/api/SupervisingFirm/${this.supervisingFirm}`,
+        method: 'get',
+
+      }).then(response => {
+        this.firm = response.data
+        console.log(response)
+        // alert('got it')
+      }).catch(err => {
+        alert(err)
+      })
+
+      // alert(`${this.userEmail}  ${this.password}`)
     },
   },
 }

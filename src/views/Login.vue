@@ -266,9 +266,9 @@ export default {
 
       bodyFormData.append('UserPassword', this.password)
 
-      bodyFormData.append('SupervisingFirmID ', this.selFirmID)
+      bodyFormData.append('SupervisingFirmID', this.selFirmID)
 
-      bodyFormData.append('RequestType', 4)
+      bodyFormData.append('RequestType', '4')
 
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',
@@ -278,7 +278,7 @@ export default {
       }).then(response => {
         console.log(response)
 
-        localStorage.setItem('supervisingFirm', response.data.newUser.supervisingFirm)
+        localStorage.setItem('supervisingFirm', response.data.supervisingFirm)
         localStorage.setItem('userID', response.data.newUser.userID)
         localStorage.setItem('userFullName', response.data.newUser.userFullName)
         localStorage.setItem('userEmail', response.data.newUser.userEmail)
