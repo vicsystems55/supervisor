@@ -119,7 +119,7 @@
                   name=""
                   class="form-control"
                 >
-                  <option value="">
+                  <option v-for="" value="">
                     Robilor
                   </option>
                   <option value="">
@@ -209,6 +209,7 @@ export default {
       status: '',
       password: '',
       userEmail: '',
+      firms: [],
       sideImg: require('@/assets/images/pages/4786.jpg'),
       // validation rulesimport store from '@/store/index'
       required,
@@ -227,6 +228,9 @@ export default {
       }
       return this.sideImg
     },
+  },
+  mounted() {
+    this.getFirms()
   },
   methods: {
     validationForm() {
@@ -262,6 +266,24 @@ export default {
       })
 
       alert(`${this.userEmail}  ${this.password}`)
+    },
+
+    getFirms() {
+   
+      
+      axios({
+        url: 'https://api.tpsapp.net/api/SupervisingFirm',
+        method: 'get',
+
+      }).then(response => {
+        this.firms = response.data
+        console.log(response)
+        // alert('got it')
+      }).catch(err => {
+        alert(err)
+      })
+
+      // alert(`${this.userEmail}  ${this.password}`)
     },
   },
 }

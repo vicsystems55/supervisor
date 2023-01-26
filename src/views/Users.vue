@@ -222,6 +222,9 @@ export default {
 
       bodyFormData.append('UserPassword', this.Address)
 
+      bodyFormData.append('RequestType', 3)
+
+
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
