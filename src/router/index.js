@@ -225,8 +225,20 @@ const router = new VueRouter({
       path: '*',
       redirect: 'error-404',
     },
+
   ],
 })
+
+// router.beforeEach(() => {
+//   if (localStorage.getItem('user_token')) {
+//     console.log('yes')
+//     // eslint-disable-next-line no-undef
+//     next()
+//   } else {
+//     console.log('no board')
+//     this.$router.push('/login')
+//   }
+// })
 
 // ? For splash screen
 // Remove afterEach hook if you are not using splash screen
@@ -235,6 +247,17 @@ router.afterEach(() => {
   const appLoading = document.getElementById('loading-bg')
   if (appLoading) {
     appLoading.style.display = 'none'
+  }
+  if (localStorage.getItem('userID')) {
+    console.log('yes')
+    // eslint-disable-next-line no-undef
+    // next()
+  } else {
+    console.log('no board')
+    router.push({
+      path: '/login',
+      replace: true,
+    })
   }
 })
 

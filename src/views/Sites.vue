@@ -4,7 +4,7 @@
     <h6>All Contract Sites</h6>
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body table-responsive">
         <table class="table">
           <thead>
             <tr>

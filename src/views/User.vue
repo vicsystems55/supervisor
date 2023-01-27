@@ -54,51 +54,25 @@
               Select Role
             </h6>
 
-            <div class="form-check">
-              <input
-                id="defaultCheck1"
-                class="form-check-input"
-                type="checkbox"
-                value=""
+            <div class="form-group">
+              <select
+                id=""
+                v-model="UserRoleNo"
+                class="form-control"
               >
-              <label
-                class="form-check-label"
-                for="defaultCheck1"
-              >
-                Project Admin
-              </label>
+              <option value="">-Select Role-</option>
+                <option
+                  v-for="userRole in usersRoles"
+                  :key="userRole.id"
+                  :value="userRole.userRoleID"
+                >{{ userRole.userRoleTitle }}</option>
+              </select>
             </div>
 
-            <div class="form-check">
-              <input
-                id="defaultCheck1"
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                checked
-              >
-              <label
-                class="form-check-label"
-                for="defaultCheck1"
-              >
-                Field Officer
-              </label>
-            </div>
-
-            <div class="form-check">
-              <input
-                id="defaultCheck1"
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                checked
-              >
-              <label
-                class="form-check-label"
-                for="defaultCheck1"
-              >
-                Super Admin
-              </label>
+            <div class="form-group float-right">
+              <button  @click="assignRole()"  class="btn btn-primary">
+                {{ loading?'Please wait...':'Assign Role' }}
+              </button>
             </div>
 
           </div>
@@ -125,12 +99,43 @@ export default {
     return {
       sideImg: require('@/assets/images/pages/4786.jpg'),
       user: '',
+      usersRoles: [],
+      UserRoleNo: '',
+      loading: false,
     }
   },
   mounted() {
     this.getUser()
+    this.getUserRoles()
   },
   methods: {
+
+    assignRole() {
+      alert(this.user.userName)
+      alert(this.UserRoleNo)
+   
+
+      this.loading = true
+      const bodyFormData = new FormData()
+      bodyFormData.append('UserName', this.user.userName)
+      bodyFormData.append('UserRoleNo', this.UserRoleNo)
+      bodyFormData.append('RequestType', '5')
+
+      axios({
+        url: 'http://api.tpsapp.net/api/UserProfile',
+        method: 'post',
+        data: bodyFormData,
+
+      }).then(response => {
+        this.loading = false
+        alert('Role Assigned!!')
+        console.log(response)
+        // alert('got it')
+      }).catch(err => {
+       console.log(err)
+      })
+    },
+
     getApi() {
       axios({
         url: 'https://jsonplaceholder.typicode.com/users',
@@ -145,7 +150,6 @@ export default {
     },
 
     getUser() {
-
       // alert(this.$route.params.id)
       axios({
         url: `http://api.tpsapp.net/api/UserProfile/${this.$route.params.id}`,
@@ -154,6 +158,22 @@ export default {
       }).then(response => {
         console.log(response)
         this.user = response.data
+        // alert('got it')
+      }).catch(err => {
+        alert(err)
+      })
+    },
+
+    getUserRoles() {
+      axios({
+        url: 'https://api.tpsapp.net/api/UserProfile',
+        method: 'get',
+
+      }).then(response => {
+        this.usersRoles = response.data[0].userRoleList
+
+        console.log(this.usersRoles)
+
         // alert('got it')
       }).catch(err => {
         alert(err)

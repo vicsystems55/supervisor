@@ -255,10 +255,6 @@ export default {
     },
     login() {
 
-      alert(this.userName)
-      alert(this.password)
-
-      alert(this.selFirmID)
 
       const bodyFormData = new FormData()
 
@@ -283,7 +279,6 @@ export default {
         localStorage.setItem('userFullName', response.data.newUser.userFullName)
         localStorage.setItem('userEmail', response.data.newUser.userEmail)
         localStorage.setItem('defaultRole', response.data.newUser.defaultRole)
-
 
         alert('Credentials verified')
 

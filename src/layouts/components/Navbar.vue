@@ -30,10 +30,9 @@
         <template #button-content>
           <div class="d-sm-flex d-none user-nav">
             <p class="user-name font-weight-bolder mb-0">
-              {{userFullName}}
+              {{ userFullName }}
             </p>
             <span class="user-status">{{ firm.supervisingFirmName }}</span>
-       
 
           </div>
           <b-avatar
@@ -90,7 +89,7 @@
             icon="LogOutIcon"
             class="mr-50"
           />
-        <router-link :to="'/login'">  <span>Logout</span></router-link>
+          <span @click="logout()">Logout</span>
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -103,7 +102,6 @@ import {
 } from 'bootstrap-vue'
 import DarkToggler from '@core/layouts/components/app-navbar/components/DarkToggler.vue'
 import axios from 'axios'
-
 
 export default {
   components: {
@@ -151,7 +149,6 @@ export default {
     },
 
     getFirm() {
-
       // alert(this.supervisingFirm)
       axios({
         url: `https://api.tpsapp.net/api/SupervisingFirm/${this.supervisingFirm}`,
@@ -162,10 +159,23 @@ export default {
         console.log(response)
         // alert('got it')
       }).catch(err => {
-        alert(err)
+        // alert(err)
+        console.log(err)
       })
 
       // alert(`${this.userEmail}  ${this.password}`)
+    },
+
+    logout() {
+      alert('logging out')
+
+      localStorage.removeItem('supervisingFirm')
+      localStorage.removeItem('userID')
+      localStorage.removeItem('userFullName')
+      localStorage.removeItem('userEmail')
+      localStorage.removeItem('defaultRole')
+
+      this.$router.push('/login')
     },
   },
 }
