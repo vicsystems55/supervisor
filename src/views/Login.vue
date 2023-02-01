@@ -268,12 +268,12 @@ export default {
         url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
         // data: bodyFormData,
-        data: {
+        data: JSON.stringify({
           UserName: this.userName,
           UserPassword: this.password,
           SupervisingFirmID: this.selFirmID,
           RequestType: '4',
-        },
+        }),
 
       }).then(response => {
         console.log(response)
