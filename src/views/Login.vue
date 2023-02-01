@@ -267,13 +267,13 @@ export default {
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
-        // data: bodyFormData,
-        data: {
-          UserName: this.userName,
-          UserPassword: this.password,
-          SupervisingFirmID: this.selFirmID,
-          RequestType: '4',
-        },
+        data: bodyFormData,
+        // data: {
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // },
 
       }).then(response => {
         console.log(response)
