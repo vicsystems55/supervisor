@@ -267,6 +267,11 @@ export default {
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-type': 'application/json',
+          Accept: 'application/json',
+        },
         // data: bodyFormData,
         data: JSON.stringify({
           UserName: this.userName,
