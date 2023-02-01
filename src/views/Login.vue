@@ -272,13 +272,13 @@ export default {
           'Content-type': 'application/json',
           'Accept': 'application/json',
         },
-        // data: bodyFormData,
-        data: JSON.stringify({
-          UserName: this.userName,
-          UserPassword: this.password,
-          SupervisingFirmID: this.selFirmID,
-          RequestType: '4',
-        }),
+        data: bodyFormData,
+        // data: JSON.stringify({
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // }),
 
       }).then(response => {
         console.log(response)
