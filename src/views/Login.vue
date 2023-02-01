@@ -254,8 +254,6 @@ export default {
       })
     },
     login() {
-
-
       const bodyFormData = new FormData()
 
       bodyFormData.append('UserName', this.userName)
@@ -269,7 +267,13 @@ export default {
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
-        data: bodyFormData,
+        // data: bodyFormData,
+        data: {
+          UserName: this.userName,
+          UserPassword: this.password,
+          SupervisingFirmID: this.selFirmID,
+          RequestType: '4',
+        },
 
       }).then(response => {
         console.log(response)
@@ -284,7 +288,7 @@ export default {
 
         return this.$router.push('/')
       }).catch(err => {
-        alert(err)
+        console.log(err)
         return this.$router.push('/login')
       })
     },
