@@ -254,10 +254,10 @@ router.afterEach(() => {
     // next()
   } else {
     console.log('no board')
-    router.push({
-      path: '/login',
-      replace: true,
-    })
+    // router.push({
+    //   path: '/login',
+    //   replace: true,
+    // })
   }
 })
 
