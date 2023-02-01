@@ -270,7 +270,7 @@ export default {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
-          Accept: 'application/json',
+          'Accept': 'application/json',
         },
         // data: bodyFormData,
         data: JSON.stringify({
