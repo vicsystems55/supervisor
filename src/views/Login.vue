@@ -254,15 +254,15 @@ export default {
       })
     },
     login() {
-      const bodyFormData = new FormData()
+      // const bodyFormData = new FormData()
 
-      bodyFormData.append('UserName', this.userName)
+      // bodyFormData.append('UserName', this.userName)
 
-      bodyFormData.append('UserPassword', this.password)
+      // bodyFormData.append('UserPassword', this.password)
 
-      bodyFormData.append('SupervisingFirmID', this.selFirmID)
+      // bodyFormData.append('SupervisingFirmID', this.selFirmID)
 
-      bodyFormData.append('RequestType', '4')
+      // bodyFormData.append('RequestType', '4')
 
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',
@@ -288,6 +288,8 @@ export default {
         localStorage.setItem('userFullName', response.data.newUser.userFullName)
         localStorage.setItem('userEmail', response.data.newUser.userEmail)
         localStorage.setItem('defaultRole', response.data.newUser.defaultRole)
+        localStorage.setItem('UserName', response.data.newUser.userName)
+
 
         alert('Credentials verified')
 
