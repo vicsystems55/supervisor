@@ -81,6 +81,8 @@
             v-for="contractFacility in contractFacilities"
             :key="contractFacility.id"
             :title="(contractFacility.facilityName) + contractFacility.contractFacilityTypeID"
+
+            @click="getContractFacilityBOQ(contractFacility.contractFacilityTypeID)"
           >
 
             <div class="col-md-6 py-3">
@@ -117,20 +119,38 @@
                 class="border"
               >
                 <div class="table-responsive">
-                  <table class="table py-3 table-striped">
+                  <table
+                    style="font-size: 70%;"
+                    class="table py-3 table-striped d-none"
+                  >
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Site Name</th>
-                        <th>LGA</th>
+                        <th style="width: 150px;">
+                          LOCATION
+                        </th>
+                        <th style="width: 150px;">
+                          WARD
+                        </th>
+                        <th style="width: 150px;">
+                          LGA
+                        </th>
 
-                        <th>STATE</th>
+                        <th style="width: 150px;">
+                          STATE
+                        </th>
+                        <th style="width: 150px;">
+                          CONTRACTOR
+                        </th>
                         <th />
 
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr
+                        v-for="excelImportLocation in excelImportLocations"
+                        :key="excelImportLocation.id"
+                      >
                         <td>
                           1
                         </td>
@@ -138,6 +158,14 @@
                           <input
                             type="text"
                             class="form-control"
+                            :value="excelImportLocation.location"
+                          >
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            :value="excelImportLocation.ward"
                           >
                         </td>
                         <td>
@@ -146,6 +174,9 @@
                               v-for="lga in lgas"
                               :key="lga.id"
                               value=""
+                              :selected="
+                                (excelImportLocation.lga)==
+                                  lga.lgaName?'yes':''"
                             >
                               {{ lga.lgaName }}
                             </option>
@@ -163,11 +194,20 @@
                                 v-for="state in states"
                                 :key="state.id"
                                 value=""
+                                :selected="
+                                  state.stateName?'yes':''"
                               >
                                 {{ state.stateName }}
                               </option>
                             </select>
                           </div>
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            :value="excelImportLocation.contractorName"
+                          >
                         </td>
                         <td>
                           <div class="form-group">
@@ -185,6 +225,67 @@
                       </tr>
                     </tbody>
                   </table>
+
+                  <div class="row">
+                    <div
+                      v-for="excelImportLocation in excelImportLocations"
+                      :key="excelImportLocation.id"
+                      class="col-md-4"
+                    >
+
+                      <div class="card">
+                        <div class="card-body">
+                          <input
+                          type="text"
+                          class="form-control"
+                          :value="excelImportLocation.location"
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            :value="excelImportLocation.ward"
+                          >
+                          <select class="form-control">
+                            <option
+                              v-for="lga in lgas"
+                              :key="lga.id"
+                              value=""
+                              :selected="
+                                (excelImportLocation.lga)==
+                                  lga.lgaName?'yes':''"
+                            >
+                              {{ lga.lgaName }}
+                            </option>
+                          </select>
+                          <select
+                            id=""
+                            name=""
+                            class="form-control"
+                          >
+                            <option
+                              v-for="state in states"
+                              :key="state.id"
+                              value=""
+                              :selected="
+                                state.stateName?'yes':''"
+                            >
+                              {{ state.stateName }}
+                            </option>
+                          </select>
+                          <input
+                            type="text"
+                            class="form-control"
+                            :value="excelImportLocation.contractorName"
+                          >
+                          <button class="btn btn-sm btn-primary">
+                            update
+                          </button>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
 
                 <div class="card border">
@@ -253,47 +354,76 @@
                 class="border"
               >
 
-                <div class="py-2">
+                <div class="py-2 table-responsive">
                   <table class="table">
                     <thead>
                       <tr>
                         <th>#</th>
                         <th>Description</th>
                         <th>Unit</th>
+                        <th>Qty</th>
+                        <th>Num</th>
+                        <th>Length</th>
+
                         <th>Rate</th>
                         <th>Total</th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr
+                        v-for="excelImportBoQ in excelImportBoQs"
+                        :key="excelImportBoQ.id"
+                      >
                         <td>1</td>
                         <td>
+                          <textarea
+                            type="text"
+                            class="form-control"
+                            :value="excelImportBoQ.description"
+                          ></textarea>
+                        </td>
+                        <td>
                           <input
                             type="text"
                             class="form-control"
-                            :value="'Preliminaries: Clearing'"
+                            :value="excelImportBoQ.unit"
                           >
                         </td>
                         <td>
                           <input
                             type="text"
                             class="form-control"
-                            :value="'L'"
+                            :value="excelImportBoQ.qty"
                           >
                         </td>
                         <td>
                           <input
                             type="text"
                             class="form-control"
-                            :value="'400'"
+                            :value="excelImportBoQ.num"
                           >
                         </td>
                         <td>
                           <input
                             type="text"
                             class="form-control"
-                            :value="'80000'"
+                            :value="excelImportBoQ.lentght"
+                          >
+                        </td>
+                        
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            :value="excelImportBoQ.rate"
+                          >
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            :value="excelImportBoQ.amount"
                           >
                         </td>
                         <td>
@@ -356,6 +486,10 @@ export default {
       states: [],
 
       file: '',
+
+      excelImportBoQs: [],
+
+      excelImportLocations: [],
 
     }
   },
@@ -456,9 +590,8 @@ export default {
     },
 
     uploadBOQ(ContractFacilityTypeID) {
-
       alert(ContractFacilityTypeID)
-      
+
       const bodyFormData = new FormData()
       bodyFormData.append('formFile', this.file)
       bodyFormData.append('ContractFacilityTypeID', ContractFacilityTypeID)
@@ -487,6 +620,20 @@ export default {
 
       // eslint-disable-next-line prefer-destructuring
       this.file = event.target.files[0]
+    },
+
+    getContractFacilityBOQ(ContractFacilityTypeID) {
+      alert('loading facility details')
+      axios({
+        url: `https://api.tpsapp.net/api/BOQImport/${ContractFacilityTypeID}`,
+        method: 'get',
+      }).then(response => {
+        this.excelImportLocations = response.data.excelImportLocations
+        this.excelImportBoQs = response.data.excelImportBoQs
+        console.log(response)
+      }).catch(err => {
+        alert(err)
+      })
     },
 
   },
