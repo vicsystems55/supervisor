@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div v-if="admin" class="card">
       <div class="card-body col-md-6">
         <h6>Create programme</h6>
         <div class="form-group">
@@ -76,6 +76,7 @@ export default {
       programmeName: '',
       SupervisingFirmID: '',
       loading: false,
+      admin: false,
 
     }
   },
@@ -135,6 +136,12 @@ export default {
   },
   mounted() {
     this.getProgrammes()
+
+    if (localStorage.getItem('defaultRole') != 2) {
+
+      this.admin = true;
+      
+    }
   },
 }
 </script>

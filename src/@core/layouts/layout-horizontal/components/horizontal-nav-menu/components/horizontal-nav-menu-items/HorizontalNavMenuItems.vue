@@ -8,6 +8,7 @@
       v-for="item in items"
       :key="item.header || item.title"
       :item="item"
+      
     />
   </ul>
 </template>
@@ -30,6 +31,10 @@ export default {
   setup() {
     const resolveNavComponent = item => {
       if (item.children) return 'horizontal-nav-menu-header-group'
+
+      if (localStorage.getItem('defaultRole') == 2 && item.title == 'User Management') return 'd-none'
+
+
       return 'horizontal-nav-menu-header-link'
     }
 

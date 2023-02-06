@@ -133,7 +133,7 @@
               <td>{{ user.userEmail }}</td>
               <td>{{ user.userName }}</td>
               <td>
-                <span class="badge badge-success">pending...</span>
+                <span class="badge badge-success">{{user.defaultRole}}</span>
               </td>
               <td>
                 <span class="badge badge-success">active</span>

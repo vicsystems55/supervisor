@@ -254,15 +254,15 @@ export default {
       })
     },
     login() {
-      // const bodyFormData = new FormData()
+      const bodyFormData = new FormData()
 
-      // bodyFormData.append('UserName', this.userName)
+      bodyFormData.append('UserName', this.userName)
 
-      // bodyFormData.append('UserPassword', this.password)
+      bodyFormData.append('UserPassword', this.password)
 
-      // bodyFormData.append('SupervisingFirmID', this.selFirmID)
+      bodyFormData.append('SupervisingFirmID', this.selFirmID)
 
-      // bodyFormData.append('RequestType', '4')
+      bodyFormData.append('RequestType', '4')
 
       axios({
         url: 'https://api.tpsapp.net/api/UserProfile',

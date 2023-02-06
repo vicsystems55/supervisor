@@ -1,7 +1,12 @@
 <template>
   <div>
 
-    <h6>All Contract Sites</h6>
+    <h4 v-if="admin">
+      All Contract Sites
+    </h4>
+    <h4 v-else>
+      My Assigned Sites
+    </h4>
 
     <div class="card">
       <div class="card-body table-responsive">
@@ -9,112 +14,55 @@
           <thead>
             <tr>
               <th>S/N</th>
-              <th>Location</th>
+              <th>Location Name</th>
+              <th>Ward</th>
               <th>LGA</th>
-                <th>State</th>
-                <th>Progress</th>
-             
-              <th></th>
+              <th>State</th>
+              <th>Contractor Name</th>
+              <th>Facility Type</th>
+              <th>Lot No.</th>
+
+              <th />
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="site,key in sites" :key="site.id">
               <td>
-                1
+                {{ key + 1 }}
               </td>
               <td>
-                GIGANE
+                {{site.locationName}}
               </td>
-              <td>GWADABAWA</td>
-              <td>SOKOTO</td>
               <td>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                </div>
+                {{ site.wardName }}
+              </td>
+              <td>
+               {{ site.localGovtName }}
+              </td>
+              <td>
+                {{ site.stateName }}
+              </td>
+              <td>
+                {{site.contractorName}}
+
+              </td>
+              <td>
+                {{ site.facilityTypeCode }}
+              </td>
+              <td>
+                {{ site.lotNo }}
               </td>
 
               <td>
                 <router-link
-                  :to="'/site/1'"
+                  :to="'/site/'+site.locationID"
                   class="btn btn-sm btn-primary"
                 >
-                  view site profile</router-link>
+                  view </router-link>
               </td>
             </tr>
-            <tr>
-              <td>
-                1
-              </td>
-              <td>
-                GIGANE
-              </td>
-              <td>GWADABAWA</td>
-              <td>SOKOTO</td>
-              <td>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                </div>
-              </td>
+       
 
-              <td>
-                <router-link
-                  :to="'/site/1'"
-                  class="btn btn-sm btn-primary"
-                >
-                  view site profile</router-link>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                1
-              </td>
-              <td>
-                GIGANE
-              </td>
-              <td>GWADABAWA</td>
-              <td>SOKOTO</td>
-              <td>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                </div>
-              </td>
-
-              <td>
-                <router-link
-                  :to="'/site/1'"
-                  class="btn btn-sm btn-primary"
-                >
-                  view site profile</router-link>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                1
-              </td>
-              <td>
-                GIGANE
-              </td>
-              <td>GWADABAWA</td>
-              <td>SOKOTO</td>
-              <td>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                </div>
-              </td>
-
-              <td>
-                <router-link
-                  :to="'/site/1'"
-                  class="btn btn-sm btn-primary"
-                >
-                  view site profile</router-link>
-              </td>
-            </tr>
-
-            
-
-           
           </tbody>
         </table>
       </div>
@@ -135,17 +83,43 @@ export default {
   data() {
     return {
 
+      admin: false,
+
+      sites: []
+
+    }
+  },
+  mounted() {
+    if (localStorage.getItem('defaultRole') != 2) {
+      this.admin = true
+    } else {
+      this.getMySites()
     }
   },
   methods: {
-    getApi() {
+    getAllSites() {
       axios({
         url: 'https://jsonplaceholder.typicode.com/users',
         method: 'get',
 
       }).then(response => {
         console.log(response)
-        alert('got it')
+        
+      }).catch(err => {
+        alert(err)
+      })
+    },
+
+    getMySites() {
+
+      axios({
+        url: `http://api.tpsapp.net/api/Supervisions/GetSupervisorSites/${localStorage.getItem('userID')}`,
+        method: 'get',
+
+      }).then(response => {
+        this.sites = response.data
+        console.log(response)
+      
       }).catch(err => {
         alert(err)
       })

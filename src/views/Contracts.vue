@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div v-if="admin" class="card">
       <div class="card-body">
         <div class="col-md-6">
           <div class="form-group">
@@ -126,12 +126,18 @@ export default {
       CreatedByUserName: '',
       ProgrammedID: '',
 
-      loading: false
+      loading: false,
+      admin: false,
 
     }
   },
   mounted() {
     this.getContracts()
+    if (localStorage.getItem('defaultRole') != 2) {
+
+this.admin = true;
+
+}
   },
   methods: {
     getContracts() {

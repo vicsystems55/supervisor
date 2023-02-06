@@ -235,50 +235,77 @@
 
                       <div class="card">
                         <div class="card-body">
-                          <input
-                          type="text"
-                          class="form-control"
-                          :value="excelImportLocation.location"
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportLocation.ward"
-                          >
-                          <select class="form-control">
-                            <option
-                              v-for="lga in lgas"
-                              :key="lga.id"
-                              value=""
-                              :selected="
-                                (excelImportLocation.lga)==
-                                  lga.lgaName?'yes':''"
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              :value="excelImportLocation.location"
                             >
-                              {{ lga.lgaName }}
-                            </option>
-                          </select>
-                          <select
-                            id=""
-                            name=""
-                            class="form-control"
-                          >
-                            <option
-                              v-for="state in states"
-                              :key="state.id"
-                              value=""
-                              :selected="
-                                state.stateName?'yes':''"
+
+                          </div>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              :value="excelImportLocation.ward"
                             >
-                              {{ state.stateName }}
-                            </option>
-                          </select>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportLocation.contractorName"
+
+                          </div>
+
+                          <div class="form-group">
+                            <select class="form-control">
+                              <option
+                                v-for="lga in lgas"
+                                :key="lga.id"
+                                value=""
+                                :selected="
+                                  (excelImportLocation.lga)==
+                                    lga.lgaName?'yes':''"
+                              >
+                                {{ lga.lgaName }}
+                              </option>
+                            </select>
+
+                          </div>
+
+                          <div class="form-group">
+
+                            <select
+                              id=""
+                              name=""
+                              class="form-control"
+                            >
+                              <option
+                                v-for="state in states"
+                                :key="state.id"
+                                value=""
+                                :selected="
+                                  state.stateName?'yes':''"
+                              >
+                                {{ state.stateName }}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              :value="excelImportLocation.contractorName"
+                            >
+                          </div>
+
+                          <button
+                            class="btn btn-sm btn-primary"
+                            @click="updateSite(
+                            excelImportLocation.location,
+                            excelImportLocation.ward,
+                            excelImportLocation.lga,
+                            excelImportLocation.stateName,
+                            excelImportLocation.contractorName
+                            )"
                           >
-                          <button class="btn btn-sm btn-primary">
-                            update
+                            update..
                           </button>
 
                         </div>
@@ -381,7 +408,7 @@
                             type="text"
                             class="form-control"
                             :value="excelImportBoQ.description"
-                          ></textarea>
+                          />
                         </td>
                         <td>
                           <input
@@ -411,7 +438,7 @@
                             :value="excelImportBoQ.lentght"
                           >
                         </td>
-                        
+
                         <td>
                           <input
                             type="text"
@@ -427,7 +454,10 @@
                           >
                         </td>
                         <td>
-                          <button class="btn btn-sm btn-primary">
+                          <button
+                            class="btn btn-sm btn-primary"
+                            @click="updateSite()"
+                          >
                             update
                           </button>
                         </td>
@@ -490,6 +520,35 @@ export default {
       excelImportBoQs: [],
 
       excelImportLocations: [],
+
+      ContractFacilityTypeID: '',
+
+      ExcelImportLocationID: '',
+
+      SiteSNo: '',
+
+      LGA: '',
+
+      WARD: '',
+
+      Community: '',
+
+      Location: '',
+
+      NewContractFacilityTypeID: '',
+
+      LotSNo: '',
+
+      ContractStateID: '',
+
+      ValidLGA: '',
+
+      FacilityType: '',
+
+      StateName: '',
+
+
+
 
     }
   },
@@ -634,6 +693,23 @@ export default {
       }).catch(err => {
         alert(err)
       })
+    },
+
+    updateSite(
+      location,
+      ward,
+      lga,
+      stateName,
+      contractorName,
+    ) {
+      alert(location)
+      alert(ward)
+
+      alert(lga)
+
+      alert(stateName)
+
+      alert(contractorName)
     },
 
   },
