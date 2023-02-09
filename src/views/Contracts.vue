@@ -164,14 +164,14 @@ this.admin = true;
 
       const bodyFormData = new FormData()
 
-      bodyFormData.append('ContractDescription', this.userName)
-      bodyFormData.append('ContractRefNo', this.userName)
+      bodyFormData.append('ContractDescription', this.ContractDescription)
+      bodyFormData.append('ContractRefNo', this.ContractRefNo)
 
-      bodyFormData.append('AwardDate', this.userName)
+      bodyFormData.append('AwardDate', this.AwardDate)
 
-      bodyFormData.append('ContractDuration', this.userName)
+      bodyFormData.append('ContractDuration', this.ContractDuration)
 
-      bodyFormData.append('CreatedByUserName', this.userName)
+      bodyFormData.append('CreatedByUserName', localStorage.getItem('userName'))
 
       bodyFormData.append('ProgrammedID', 1)
 
@@ -194,7 +194,7 @@ this.admin = true;
 
       }).then(response => {
       this.loading = false
-        this.contracts = response.data
+      this.getContracts()
         console.log(response)
         console.log('got it')
       }).catch(err => {

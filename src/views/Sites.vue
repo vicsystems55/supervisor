@@ -92,6 +92,7 @@ export default {
   mounted() {
     if (localStorage.getItem('defaultRole') != 2) {
       this.admin = true
+      this.getAllSites()
     } else {
       this.getMySites()
     }
@@ -99,10 +100,11 @@ export default {
   methods: {
     getAllSites() {
       axios({
-        url: 'https://jsonplaceholder.typicode.com/users',
+        url: 'https://api.tpsapp.net/api/Supervisions/GetSupervisionSites',
         method: 'get',
 
       }).then(response => {
+        this.sites = response.data
         console.log(response)
         
       }).catch(err => {
