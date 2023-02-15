@@ -108,8 +108,20 @@
                   class="btn btn-primary"
                   @click="uploadBOQ(contractFacility.contractFacilityTypeID)"
                 >
-                  Upload
+                  {{ upload_loading?'Uploading...':'Upload' }}
+
                 </button>
+
+                <div class="form-group py-3">
+                  <button
+                    class="btn btn-success"
+                    @click="publishBoq(contractFacility.contractFacilityTypeID)"
+                  >
+                    {{ publish_loading?'Publishing...':'Publish BOQ' }}
+
+                  </button>
+                </div>
+
               </div>
             </div>
 
@@ -298,11 +310,11 @@
                           <button
                             class="btn btn-sm btn-primary"
                             @click="updateSite(
-                            excelImportLocation.location,
-                            excelImportLocation.ward,
-                            excelImportLocation.lga,
-                            excelImportLocation.stateName,
-                            excelImportLocation.contractorName
+                              excelImportLocation.location,
+                              excelImportLocation.ward,
+                              excelImportLocation.lga,
+                              excelImportLocation.stateName,
+                              excelImportLocation.contractorName
                             )"
                           >
                             update..
@@ -547,8 +559,9 @@ export default {
 
       StateName: '',
 
+      upload_loading: false,
 
-
+      publish_loading: false,
 
     }
   },
@@ -649,7 +662,9 @@ export default {
     },
 
     uploadBOQ(ContractFacilityTypeID) {
-      alert(ContractFacilityTypeID)
+      this.upload_loading = true
+
+      // alert(ContractFacilityTypeID)
 
       const bodyFormData = new FormData()
       bodyFormData.append('formFile', this.file)
@@ -659,9 +674,15 @@ export default {
         method: 'post',
         data: bodyFormData,
       }).then(response => {
+        this.upload_loading = false
+        alert('BOQ Uploaded!!')
+
+
         // this.getContractFacilities()
         console.log(response)
       }).catch(err => {
+        this.upload_loading = false
+
         alert(err)
       })
     },
@@ -710,6 +731,28 @@ export default {
       alert(stateName)
 
       alert(contractorName)
+    },
+
+    publishBoq(contractFacilityTypeID) {
+      this.publish_loading = true
+
+      const bodyFormData = new FormData()
+      bodyFormData.append('contractFacilityTypeID', contractFacilityTypeID)
+
+      axios({
+        url: 'https://api.tpsapp.net/api/BOQImport/PublistExcelBoQUplaod',
+        method: 'post',
+        data: bodyFormData,
+      }).then(response => {
+        this.publish_loading = false
+
+        alert('BOQ Published!!')
+        console.log(response)
+      }).catch(err => {
+        this.publish_loading = false
+
+        alert(err)
+      })
     },
 
   },

@@ -42,39 +42,62 @@
         <div class="card">
           <div class="card-body">
 
-            <form :action="''" method="post">
+            <form
+              :action="''"
+              method="post"
+            >
 
-                <input type="hidden" :name="'SupervisionDate'" :value="'2023-02-02'">
-                <input type="hidden" :name="'WorkCommencementDate'" :value="'2023-02-02'">
-                <input type="hidden" :name="'LocationID'" :value="'1'">
-
-
-                <input type="hidden" :name="'UserID'" :value="'3'">
-
-
-            <div v-for="siteSupervion in siteSupervions" :key="siteSupervion.id" class="form-check mb-1">
               <input
-                id="defaultCheck1"
-                class="form-check-input"
-                type="checkbox"
-                :name="siteSupervion.fielsCheckBoxName"
-
-                :checked="isCompleted?'yes':'no'"
+                type="hidden"
+                :name="'SupervisionDate'"
+                :value="'2023-02-02'"
               >
-              <label
-                class="form-check-label"
-                for="defaultCheck1"
+              <input
+                type="hidden"
+                :name="'WorkCommencementDate'"
+                :value="'2023-02-02'"
               >
-                {{siteSupervion.stage}}
-              </label>
-            </div>
+              <input
+                type="hidden"
+                :name="'LocationID'"
+                :value="'1'"
+              >
 
-            <div class="form-group">
-                <button class="btn btn-primary">Submit</button>
-            </div>
+              <input
+                type="hidden"
+                :name="'UserID'"
+                :value="'3'"
+              >
 
-        </form>
-           
+              <div
+                v-for="siteSupervion in siteSupervions"
+                :key="siteSupervion.id"
+                class="form-check mb-1"
+              >
+                <input
+                  id="defaultCheck1"
+                  class="form-check-input"
+                  type="checkbox"
+                  :name="siteSupervion.fielsCheckBoxName"
+
+                  :checked="isCompleted?'yes':'no'"
+                >
+                <label
+                  class="form-check-label"
+                  for="defaultCheck1"
+                >
+                  {{ siteSupervion.stage }}
+                </label>
+              </div>
+
+              <div class="form-group">
+                <button class="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+
+            </form>
+
           </div>
         </div>
       </div>
@@ -83,7 +106,11 @@
         <div class="card">
           <div class="card-body">
 
-            <div v-for="siteComment in siteComments" :key="siteComment.id" class="form-check mb-1">
+            <div
+              v-for="siteComment in siteComments"
+              :key="siteComment.id"
+              class="form-check mb-1"
+            >
               <input
                 id="defaultCheck1"
                 class="form-check-input"
@@ -94,10 +121,10 @@
                 class="form-check-label"
                 for="defaultCheck1"
               >
-                {{siteComment.description}}
+                {{ siteComment.description }}
               </label>
             </div>
-           
+
           </div>
         </div>
       </div>
@@ -118,27 +145,34 @@
           >
             <b-card-text>
               <div class="row">
-                <div class="col-md-6">
 
-                  <div class="form-group">
-                    <label for="">Geophysical survey done? (sight survey result)</label>
+                <div v-for="siteCheck in siteChecklist" :key="siteCh" class="col-md-6">
+
+                  <div v-if="siteCheck.responseDataType=='Select'||'Select '" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label>
+                      <select name="" id="" class="form-control">
+                      <option value="">Yes</option>
+                      <option value="">No</option>
+                    </select>
+                  </div>
+
+             
+
+                  <div v-if="siteCheck.responseDataType=='Number'" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label>
+                      <input type="number" class="form-control">
+                  </div>
+
+                  <div v-if="siteCheck.responseDataType=='File'" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label>
                     <input
-                      type="text"
+                      type="file"
                       class="form-control"
                     >
                   </div>
                 </div>
 
-                <div class="col-md-6">
-
-                  <div class="form-group">
-                    <label for="">Diameter of casing/screen(Inches)</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                    >
-                  </div>
-                </div>
+               
               </div>
             </b-card-text>
           </b-tab>
@@ -225,24 +259,43 @@ export default {
     return {
       sideImg: require('@/assets/images/pages/4786.jpg'),
       siteSupervions: [],
-      siteComments: []
+      siteComments: [],
+      siteChecklist: []
     }
   },
   mounted() {
     this.getSiteDetails()
+
+    this.getChecklist()
   },
   methods: {
     getSiteDetails() {
-        alert(`https://api.tpsapp.net/api/Supervisions/GetSiteCheckList/${this.$route.params.id}/${localStorage.getItem('userID')}`)
+      // alert(`https://api.tpsapp.net/api/Supervisions/GetSiteCheckList/${this.$route.params.id}/${localStorage.getItem('userID')}`)
       axios({
-        url: `http://api.tpsapp.net/api/Supervisions/GetSiteSupervision/1/3`,
+        url: `https://api.tpsapp.net/api/Supervisions/GetSiteSupervision/${this.$route.params.id}/${localStorage.getItem('userID')}`,
+        // url: `https://api.tpsapp.net/api/Supervisions/GetSiteSupervision/2/1`,
+
         method: 'get',
 
       }).then(response => {
         console.log(response)
         this.siteSupervions = response.data.siteSupervions
         this.siteComments = response.data.siteComments
+      }).catch(err => {
+        alert(err)
+      })
+    },
 
+    getChecklist() {
+      axios({
+        // alert(`https://api.tpsapp.net/api/Supervisions/GetSiteCheckList/${this.$route.params.id}/${localStorage.getItem('userID')}`)
+        url: `https://api.tpsapp.net/api/Supervisions/GetSiteCheckList/${this.$route.params.id}/${localStorage.getItem('userID')}`,
+
+        method: 'get',
+
+      }).then(response => {
+        console.log(response)
+        this.siteChecklist = response.data.siteSupervions
 
       }).catch(err => {
         alert(err)
