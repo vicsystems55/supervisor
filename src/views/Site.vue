@@ -148,12 +148,30 @@
 
                 <div v-for="siteCheck in siteChecklist" :key="siteCh" class="col-md-6">
 
-                  <div v-if="siteCheck.responseDataType=='Select'||'Select '" class="form-group">
+                  <div v-if="siteCheck.responseDataType=='Select'" class="form-group">
                     <label for="">{{siteCheck.reportQuestion}}</label>
                       <select name="" id="" class="form-control">
                       <option value="">Yes</option>
                       <option value="">No</option>
                     </select>
+                  </div>
+
+                  <div v-if="siteCheck.responseDataType=='Select '" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label>
+                      <select name="" id="" class="form-control">
+                      <option value="">Yes</option>
+                      <option value="">No</option>
+                    </select>
+                  </div>
+
+                  <div v-if="siteCheck.responseDataType=='Text'" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label>
+                      <input type="text" class="form-control">
+                  </div>
+
+                  <div v-if="siteCheck.responseDataType=='Text '" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label>
+                      <input type="text" class="form-control">
                   </div>
 
              
@@ -163,11 +181,11 @@
                       <input type="number" class="form-control">
                   </div>
 
-                  <div v-if="siteCheck.responseDataType=='File'" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label>
+                  <div v-if="siteCheck.responseDataType=='FILE'" class="form-group">
+                    <label for="">{{siteCheck.reportQuestion}}</label><br>
                     <input
                       type="file"
-                      class="form-control"
+                      class="form-file"
                     >
                   </div>
                 </div>
