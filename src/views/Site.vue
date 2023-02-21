@@ -11,28 +11,35 @@
             <table class="table">
               <tr>
                 <td>LOCATION:</td>
-                <td>GIGANE</td>
+                <td class="font-weight-bold">
+                  {{ communityName }}
+                </td>
               </tr>
               <tr>
                 <td>LGA:</td>
-                <td>GWADABAWA</td>
+                <td class="font-weight-bold">
+                  {{ localGovtName }}
+                </td>
               </tr>
               <tr>
                 <td>FACILITY TYPE:</td>
-                <td>SMBH</td>
+                <td class="font-weight-bold">
+                  {{ facilityTypeCode }}
+                </td>
               </tr>
               <tr>
                 <td>LOT CODE:</td>
-                <td>SOK_MZ_WF1</td>
+                <td class="font-weight-bold">
+                  {{ lotDescription }}
+                </td>
               </tr>
               <tr>
                 <td>CONTRACTOR:</td>
-                <td>MZ AND SONS</td>
+                <td class="font-weight-bold">
+                  {{ contractorName }}
+                </td>
               </tr>
-              <tr>
-                <td>SUPERVISING FIRM:</td>
-                <td>SOURCE WATER</td>
-              </tr>
+
             </table>
           </div>
         </div>
@@ -41,62 +48,45 @@
       <div class="col-md-6 p-1">
         <div class="card">
           <div class="card-body">
-
-            <form
-              :action="''"
-              method="post"
-            >
-
-              <input
-                type="hidden"
-                :name="'SupervisionDate'"
-                :value="'2023-02-02'"
-              >
-              <input
-                type="hidden"
-                :name="'WorkCommencementDate'"
-                :value="'2023-02-02'"
-              >
-              <input
-                type="hidden"
-                :name="'LocationID'"
-                :value="'1'"
-              >
-
-              <input
-                type="hidden"
-                :name="'UserID'"
-                :value="'3'"
-              >
+            <h6>Supervision</h6>
+            <hr>
+            <div>
 
               <div
-                v-for="siteSupervion in siteSupervions"
-                :key="siteSupervion.id"
+                v-for="siteSupervision in siteSupervions"
+                :key="siteSupervision.id"
                 class="form-check mb-1"
               >
                 <input
-                  id="defaultCheck1"
+         
                   class="form-check-input"
                   type="checkbox"
-                  :name="siteSupervion.fielsCheckBoxName"
+                  :name="siteSupervision.fielsCheckBoxName"
+                  :value="siteSupervision.fielsCheckBoxName"
+                  @click="collectSiteIds(siteSupervision.fielsCheckBoxName)"
+                  :id="siteSupervision.fielsCheckBoxName"
 
-                  :checked="isCompleted?'yes':'no'"
+
+                  :checked="siteSupervision.isCompleted?1:0"
                 >
                 <label
                   class="form-check-label"
                   for="defaultCheck1"
                 >
-                  {{ siteSupervion.stage }}
+                  {{ siteSupervision.stage }}
                 </label>
               </div>
 
               <div class="form-group">
-                <button class="btn btn-primary">
+                <button
+                  class="btn btn-primary"
+                  @click="submitForm()"
+                >
                   Submit
                 </button>
               </div>
 
-            </form>
+            </div>
 
           </div>
         </div>
@@ -105,6 +95,9 @@
       <div class="col-md-6 p-1">
         <div class="card">
           <div class="card-body">
+
+            <h6>Comments</h6>
+            <hr>
 
             <div
               v-for="siteComment in siteComments"
@@ -123,6 +116,12 @@
               >
                 {{ siteComment.description }}
               </label>
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-primary">
+                Submit
+              </button>
             </div>
 
           </div>
@@ -146,43 +145,88 @@
             <b-card-text>
               <div class="row">
 
-                <div v-for="siteCheck in siteChecklist" :key="siteCh" class="col-md-6">
+                <div
+                  v-for="siteCheck in siteChecklist"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
 
-                  <div v-if="siteCheck.responseDataType=='Select'" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label>
-                      <select name="" id="" class="form-control">
-                      <option value="">Yes</option>
-                      <option value="">No</option>
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                      id=""
+                      name=""
+                      class="form-control"
+                    >
+                      <option value="">
+                        Yes
+                      </option>
+                      <option value="">
+                        No
+                      </option>
                     </select>
                   </div>
 
-                  <div v-if="siteCheck.responseDataType=='Select '" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label>
-                      <select name="" id="" class="form-control">
-                      <option value="">Yes</option>
-                      <option value="">No</option>
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                      id=""
+                      name=""
+                      class="form-control"
+                    >
+                      <option value="">
+                        Yes
+                      </option>
+                      <option value="">
+                        No
+                      </option>
                     </select>
                   </div>
 
-                  <div v-if="siteCheck.responseDataType=='Text'" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label>
-                      <input type="text" class="form-control">
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                    >
                   </div>
 
-                  <div v-if="siteCheck.responseDataType=='Text '" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label>
-                      <input type="text" class="form-control">
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                    >
                   </div>
 
-             
-
-                  <div v-if="siteCheck.responseDataType=='Number'" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label>
-                      <input type="number" class="form-control">
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                    >
                   </div>
 
-                  <div v-if="siteCheck.responseDataType=='FILE'" class="form-group">
-                    <label for="">{{siteCheck.reportQuestion}}</label><br>
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
                     <input
                       type="file"
                       class="form-file"
@@ -190,7 +234,6 @@
                   </div>
                 </div>
 
-               
               </div>
             </b-card-text>
           </b-tab>
@@ -278,7 +321,17 @@ export default {
       sideImg: require('@/assets/images/pages/4786.jpg'),
       siteSupervions: [],
       siteComments: [],
-      siteChecklist: []
+      siteChecklist: [],
+      communityName: '',
+      contractDescription: '',
+      contractorName: '',
+      facilityTypeCode: '',
+      localGovtName: '',
+      lotDescription: '',
+      locationID: '',
+
+      siteSupervionsItems: [],
+
     }
   },
   mounted() {
@@ -291,7 +344,7 @@ export default {
       // alert(`https://api.tpsapp.net/api/Supervisions/GetSiteCheckList/${this.$route.params.id}/${localStorage.getItem('userID')}`)
       axios({
         url: `https://api.tpsapp.net/api/Supervisions/GetSiteSupervision/${this.$route.params.id}/${localStorage.getItem('userID')}`,
-        // url: `https://api.tpsapp.net/api/Supervisions/GetSiteSupervision/2/1`,
+        // url: 'https://api.tpsapp.net/api/Supervisions/GetSiteSupervision/1/2',
 
         method: 'get',
 
@@ -315,10 +368,101 @@ export default {
         console.log(response)
         this.siteChecklist = response.data.siteSupervions
 
+        this.communityName = response.data.communityName
+
+        this.contractDescription = response.data.contractDescription
+
+        this.contractorName = response.data.contractorName
+
+        this.facilityTypeCode = response.data.facilityTypeCode
+
+        this.localGovtName = response.data.localGovtName
+
+        this.lotDescription = response.data.lotDescription
+
+        this.locationID = response.data.locationID
       }).catch(err => {
         alert(err)
       })
     },
+    // invoicesystem_backend/publicv
+    collectSiteIds(checkItem) {
+      // alert(checkItem)
+      if (document.getElementById(checkItem).checked) {
+        this.siteSupervionsItems.push(checkItem)
+
+        console.log(this.siteSupervionsItems)
+
+   
+      } else {
+        const lock = this.siteSupervionsItems.indexOf(checkItem)
+
+        this.siteSupervionsItems.splice(lock, 1)
+
+        console.log(this.siteSupervionsItems)
+
+    
+      }
+    },
+
+    submitForm() {
+      const SupervisionDate = '2023-02-20'
+      const WorkCommencementDate = '2023-02-20'
+      const LocationID = this.$route.params.id
+      const UserID = localStorage.getItem('userID')
+
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('SupervisionDate', SupervisionDate)
+
+      bodyFormData.append('WorkCommencementDate', WorkCommencementDate)
+
+      bodyFormData.append('LocationID', LocationID)
+
+      bodyFormData.append('UserID', UserID)
+
+      for (let index = 0; index < this.siteSupervionsItems.length; index++) {
+
+
+
+        bodyFormData.append(this.siteSupervionsItems[index], 'ON')
+
+
+        
+        console.log(this.siteSupervions[index].fielsCheckBoxName)
+      }
+
+      // this.siteSupervisions.forEach(siteSupervision => {
+      //   bodyFormData.append(siteSupervision.fielsCheckBoxName, siteSupervision.fielsCheckBoxName)
+      // })
+
+      console.log(this.siteSupervions[0].fielsCheckBoxName)
+
+      axios({
+        url: 'http://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
+        method: 'post',
+        // headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Content-type': 'application/json',
+        //   'Accept': 'application/json',
+        // },
+        data: bodyFormData,
+        // data: JSON.stringify({
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // }),
+
+      }).then(response => {
+        console.log(response)
+
+        alert('Site Supervision Updated!!')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
   },
 }
 </script>
