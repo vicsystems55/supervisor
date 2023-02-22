@@ -58,16 +58,15 @@
                 class="form-check mb-1"
               >
                 <input
-         
+
+                  :id="siteSupervision.fielsCheckBoxName"
                   class="form-check-input"
                   type="checkbox"
                   :name="siteSupervision.fielsCheckBoxName"
                   :value="siteSupervision.fielsCheckBoxName"
-                  @click="collectSiteIds(siteSupervision.fielsCheckBoxName)"
-                  :id="siteSupervision.fielsCheckBoxName"
-
-
                   :checked="siteSupervision.isCompleted?1:0"
+
+                  @click="collectSiteIds(siteSupervision.fielsCheckBoxName)"
                 >
                 <label
                   class="form-check-label"
@@ -80,9 +79,13 @@
               <div class="form-group">
                 <button
                   class="btn btn-primary"
+                  :disabled="site_supervision_loading?true:false"
+
                   @click="submitForm()"
                 >
-                  Submit
+
+                  {{ site_supervision_loading?'Please wait...':'Submit' }}
+
                 </button>
               </div>
 
@@ -332,6 +335,8 @@ export default {
 
       siteSupervionsItems: [],
 
+      site_supervision_loading: false,
+
     }
   },
   mounted() {
@@ -352,6 +357,23 @@ export default {
         console.log(response)
         this.siteSupervions = response.data.siteSupervions
         this.siteComments = response.data.siteComments
+
+        const siteSupervionsItemsj = this.siteSupervions
+          .filter(element => (element.isCompleted
+                    === true))
+
+        console.log(siteSupervionsItemsj)
+
+        // eslint-disable-next-line no-unused-expressions
+        siteSupervionsItemsj.forEach(siteSupervisionItem => {
+          this.siteSupervionsItems.push(siteSupervisionItem.fielsCheckBoxName)
+        })
+
+        console.log(this.siteSupervionsItems)
+
+        //   this.siteSupervions.forEach(siteSupervision => {
+        //   bodyFormData.append(siteSupervision.fielsCheckBoxName, 'OFF')
+        // })
       }).catch(err => {
         alert(err)
       })
@@ -388,24 +410,77 @@ export default {
     // invoicesystem_backend/publicv
     collectSiteIds(checkItem) {
       // alert(checkItem)
+
+      // populate siteSupervionsItems
+
       if (document.getElementById(checkItem).checked) {
         this.siteSupervionsItems.push(checkItem)
 
         console.log(this.siteSupervionsItems)
-
-   
       } else {
         const lock = this.siteSupervionsItems.indexOf(checkItem)
 
         this.siteSupervionsItems.splice(lock, 1)
 
         console.log(this.siteSupervionsItems)
-
-    
       }
     },
 
-    submitForm() {
+    async clearSiteSupervisionAnswers() {
+      const SupervisionDate = '2023-02-20'
+      const WorkCommencementDate = '2023-02-20'
+      const LocationID = this.$route.params.id
+      const UserID = localStorage.getItem('userID')
+
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('SupervisionDate', SupervisionDate)
+
+      bodyFormData.append('WorkCommencementDate', WorkCommencementDate)
+
+      bodyFormData.append('LocationID', LocationID)
+
+      bodyFormData.append('UserID', UserID)
+
+      // for (let index = 0; index < this.siteSupervionsItems.length; index++) {
+      //   bodyFormData.append(this.siteSupervionsItems[index], 'ON')
+
+      //   console.log(this.siteSupervions[index].fielsCheckBoxName)
+      // }
+
+      this.siteSupervions.forEach(siteSupervision => {
+        bodyFormData.append(siteSupervision.fielsCheckBoxName, 'OFF')
+      })
+
+      console.log(this.siteSupervions[0].fielsCheckBoxName)
+
+      await axios({
+        url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
+        method: 'post',
+        // headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Content-type': 'application/json',
+        //   'Accept': 'application/json',
+        // },
+        data: bodyFormData,
+        // data: JSON.stringify({
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // }),
+
+      }).then(response => {
+        console.log(response)
+        console.log('former records cleared')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    async submitForm() {
+      this.site_supervision_loading = true
+      await this.clearSiteSupervisionAnswers()
       const SupervisionDate = '2023-02-20'
       const WorkCommencementDate = '2023-02-20'
       const LocationID = this.$route.params.id
@@ -422,13 +497,8 @@ export default {
       bodyFormData.append('UserID', UserID)
 
       for (let index = 0; index < this.siteSupervionsItems.length; index++) {
-
-
-
         bodyFormData.append(this.siteSupervionsItems[index], 'ON')
 
-
-        
         console.log(this.siteSupervions[index].fielsCheckBoxName)
       }
 
@@ -439,7 +509,7 @@ export default {
       console.log(this.siteSupervions[0].fielsCheckBoxName)
 
       axios({
-        url: 'http://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
+        url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
         method: 'post',
         // headers: {
         //   'Access-Control-Allow-Origin': '*',
@@ -457,7 +527,11 @@ export default {
       }).then(response => {
         console.log(response)
 
+        this.getSiteDetails()
+
         alert('Site Supervision Updated!!')
+
+        this.site_supervision_loading = false
       }).catch(err => {
         console.log(err)
       })
