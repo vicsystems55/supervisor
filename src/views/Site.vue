@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h6>GIGANE - GWADABAWA</h6>
+    <h6>  {{ communityName }}</h6>
 
     <div class="row">
       <div class="col-md-12 p-1">
@@ -108,10 +108,14 @@
               class="form-check mb-1"
             >
               <input
-                id="defaultCheck1"
+                :id="siteComment.fieldCheckBoxName"
                 class="form-check-input"
                 type="checkbox"
-                value=""
+                :name="siteComment.fieldCheckBoxName"
+                :value="siteComment.fieldCheckBoxName"
+                :checked="siteComment.added?1:0"
+
+                @click="collectCommentsIds(siteComment.fieldCheckBoxName)"
               >
               <label
                 class="form-check-label"
@@ -122,8 +126,11 @@
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary">
-                Submit
+              <button
+                class="btn btn-primary"
+                @click="submitCommentsForm()"
+              >
+                {{ site_comments_loading?'Please wait...':'Submit' }}
               </button>
             </div>
 
@@ -149,7 +156,7 @@
               <div class="row">
 
                 <div
-                  v-for="siteCheck in siteChecklist"
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE1')"
                   :key="siteCheck.id"
                   class="col-md-6"
                 >
@@ -242,21 +249,195 @@
           </b-tab>
           <b-tab title="2">
             <b-card-text>
-              Pudding candy canes sugar plum cookie chocolate cake powder croissant. Carrot cake tiramisu
-              danish candy cake muffin croissant tart dessert. Tiramisu caramels candy canes chocolate
-              cake sweet roll liquorice icing cupcake.Bear claw chocolate chocolate cake jelly-o pudding
-              lemon drops sweet roll sweet candy. Chocolate sweet chocolate bar candy chocolate bar chupa
-              chups gummi bears lemon drops.
+              <div class="row">
+
+                <div
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE2')"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                      id=""
+                      name=""
+                      class="form-control"
+                    >
+                      <option value="">
+                        Yes
+                      </option>
+                      <option value="">
+                        No
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                      id=""
+                      name=""
+                      class="form-control"
+                    >
+                      <option value="">
+                        Yes
+                      </option>
+                      <option value="">
+                        No
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <input
+                      type="file"
+                      class="form-file"
+                    >
+                  </div>
+                </div>
+
+              </div>
             </b-card-text>
           </b-tab>
 
           <b-tab title="3">
             <b-card-text>
-              Carrot cake dragée chocolate. Lemon drops ice cream wafer gummies dragée. Chocolate bar
-              liquorice cheesecake cookie chupa chups marshmallow oat cake biscuit. Dessert toffee
-              fruitcake ice cream powder tootsie roll cake.Chocolate bonbon chocolate chocolate cake
-              halvah tootsie roll marshmallow. Brownie chocolate toffee toffee jelly beans bonbon sesame
-              snaps sugar plum candy canes.
+              <div class="row">
+
+                <div
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE3')"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                      id=""
+                      name=""
+                      class="form-control"
+                    >
+                      <option value="">
+                        Yes
+                      </option>
+                      <option value="">
+                        No
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                      id=""
+                      name=""
+                      class="form-control"
+                    >
+                      <option value="">
+                        Yes
+                      </option>
+                      <option value="">
+                        No
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <input
+                      type="file"
+                      class="form-file"
+                    >
+                  </div>
+                </div>
+
+              </div>
             </b-card-text>
           </b-tab>
           <b-tab title="4">
@@ -307,15 +488,15 @@
 
 <script>
 import {
-  BCard, BCardText, BLink, BTab, BTabs,
+  BCardText, BTab, BTabs,
 } from 'bootstrap-vue'
 import axios from 'axios'
 
 export default {
   components: {
-    BCard,
+    
     BCardText,
-    BLink,
+  
     BTab,
     BTabs,
   },
@@ -335,7 +516,11 @@ export default {
 
       siteSupervionsItems: [],
 
+      siteCommentsItems: [],
+
       site_supervision_loading: false,
+
+      site_comments_loading: false,
 
     }
   },
@@ -407,6 +592,13 @@ export default {
         alert(err)
       })
     },
+
+    sortCheckList(criticalStage) {
+      let questions = []
+      questions = this.siteChecklist.filter(element => (element.criticalStageName
+                    == criticalStage))
+      return questions
+    },
     // invoicesystem_backend/publicv
     collectSiteIds(checkItem) {
       // alert(checkItem)
@@ -423,6 +615,24 @@ export default {
         this.siteSupervionsItems.splice(lock, 1)
 
         console.log(this.siteSupervionsItems)
+      }
+    },
+
+    collectCommentsIds(checkItem) {
+      // alert(checkItem)
+
+      // populate siteSupervionsItems
+
+      if (document.getElementById(checkItem).checked) {
+        this.siteCommentsItems.push(checkItem)
+
+        console.log(this.siteCommentsItems)
+      } else {
+        const lock = this.siteCommentsItems.indexOf(checkItem)
+
+        this.siteCommentsItems.splice(lock, 1)
+
+        console.log(this.siteCommentsItems)
       }
     },
 
@@ -453,6 +663,58 @@ export default {
       })
 
       console.log(this.siteSupervions[0].fielsCheckBoxName)
+
+      await axios({
+        url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
+        method: 'post',
+        // headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Content-type': 'application/json',
+        //   'Accept': 'application/json',
+        // },
+        data: bodyFormData,
+        // data: JSON.stringify({
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // }),
+
+      }).then(response => {
+        console.log(response)
+        console.log('former records cleared')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    async clearSiteCommentsAnswers() {
+      const SupervisionDate = '2023-02-20'
+      const WorkCommencementDate = '2023-02-20'
+      const LocationID = this.$route.params.id
+      const UserID = localStorage.getItem('userID')
+
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('SupervisionDate', SupervisionDate)
+
+      bodyFormData.append('WorkCommencementDate', WorkCommencementDate)
+
+      bodyFormData.append('LocationID', LocationID)
+
+      bodyFormData.append('UserID', UserID)
+
+      // for (let index = 0; index < this.siteSupervionsItems.length; index++) {
+      //   bodyFormData.append(this.siteSupervionsItems[index], 'ON')
+
+      //   console.log(this.siteSupervions[index].fielsCheckBoxName)
+      // }
+
+      this.siteComments.forEach(siteComment => {
+        bodyFormData.append(siteComment.fielsCheckBoxName, 'OFF')
+      })
+
+      // console.log(this.siteComments[0].fielsCheckBoxName)
 
       await axios({
         url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
@@ -534,6 +796,67 @@ export default {
         this.site_supervision_loading = false
       }).catch(err => {
         console.log(err)
+      })
+    },
+
+    async submitCommentsForm() {
+      this.site_comments_loading = true
+      await this.clearSiteCommentsAnswers()
+      const SupervisionDate = '2023-02-20'
+      const WorkCommencementDate = '2023-02-20'
+      const LocationID = this.$route.params.id
+      const UserID = localStorage.getItem('userID')
+
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('SupervisionDate', SupervisionDate)
+
+      bodyFormData.append('WorkCommencementDate', WorkCommencementDate)
+
+      bodyFormData.append('LocationID', LocationID)
+
+      bodyFormData.append('UserID', UserID)
+
+      console.log(this.siteCommentsItems.length)
+
+      for (let index = 0; index < this.siteCommentsItems.length; index++) {
+        bodyFormData.append(this.siteCommentsItems[index], 'ON')
+
+        console.log(this.siteCommentsItems[index])
+      }
+
+      // this.siteSupervisions.forEach(siteSupervision => {
+      //   bodyFormData.append(siteSupervision.fielsCheckBoxName, siteSupervision.fielsCheckBoxName)
+      // })
+
+      // console.log(this.siteSupervions[0].fielsCheckBoxName)
+
+      axios({
+        url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteSupervision',
+        method: 'post',
+        // headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Content-type': 'application/json',
+        //   'Accept': 'application/json',
+        // },
+        data: bodyFormData,
+        // data: JSON.stringify({
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // }),
+
+      }).then(response => {
+        console.log(response)
+
+        alert('Site Comments Updated!!')
+        this.getSiteDetails()
+
+        this.site_comments_loading = false
+      }).catch(err => {
+        console.log(err)
+        this.site_comments_loading = false
       })
     },
 
