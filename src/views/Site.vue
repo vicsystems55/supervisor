@@ -205,8 +205,10 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <input
+                      :id="siteCheck.fieldAttributeName"
                       type="text"
                       class="form-control"
+                      :name="siteCheck.fieldAttributeName"
                     >
                   </div>
 
@@ -244,6 +246,15 @@
                   </div>
                 </div>
 
+              </div>
+
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist(siteCheck.criticalStageName)"
+                >
+                  Submit
+                </button>
               </div>
             </b-card-text>
           </b-tab>
@@ -491,12 +502,13 @@ import {
   BCardText, BTab, BTabs,
 } from 'bootstrap-vue'
 import axios from 'axios'
+import { forEach } from 'postcss-rtl/lib/affected-props'
 
 export default {
   components: {
-    
+
     BCardText,
-  
+
     BTab,
     BTabs,
   },
@@ -858,6 +870,47 @@ export default {
         console.log(err)
         this.site_comments_loading = false
       })
+    },
+
+    async submitChecklist(stage) {
+      let questions = []
+      questions = this.siteChecklist.filter(element => (element.criticalStageName
+                    == stage))
+
+      const bodyFormData = FormData()
+
+      questions.forEach(element => {
+        bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).value)
+      })
+
+      await axios({
+        url: 'http://api.tpsapp.net/api/Supervisions/SubmitSiteCheckList',
+        method: 'post',
+        // headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Content-type': 'application/json',
+        //   'Accept': 'application/json',
+        // },
+        data: bodyFormData,
+        // data: JSON.stringify({
+        //   UserName: this.userName,
+        //   UserPassword: this.password,
+        //   SupervisingFirmID: this.selFirmID,
+        //   RequestType: '4',
+        // }),
+
+      }).then(response => {
+        console.log(response)
+
+       
+
+        alert('Site Checklist Updated!!')
+
+      }).catch(err => {
+        console.log(err)
+      })
+
+
     },
 
   },
