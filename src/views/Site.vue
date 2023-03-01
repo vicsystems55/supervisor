@@ -252,11 +252,14 @@
                     class="form-group"
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
                     <input
                       :id="siteCheck.fieldAttributeName"
                       type="file"
                       class="form-file"
                       :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
                     >
                   </div>
                 </div>
@@ -950,15 +953,62 @@ export default {
 
     previewFile4(event) {
       console.log(event)
+      console.log(event.target.files[0])
+
 
       if (event.target.files.length > 0) {
-        const src = URL.createObjectURL(event.target.files[0])
-        const preview = document.getElementById('previewImg')
-        preview.src = src
+        const SupervisionDate = '2023-02-20'
+        const WorkCommencementDate = '2023-02-20'
+        const LocationID = this.$route.params.id
+        const UserID = localStorage.getItem('userID')
+
+        const bodyFormData = new FormData()
+
+        bodyFormData.append('SupervisionDate', SupervisionDate)
+
+        bodyFormData.append('WorkCommencementDate', WorkCommencementDate)
+
+        bodyFormData.append('LocationID', LocationID)
+
+        bodyFormData.append('UserID', UserID)
+
+        bodyFormData.append(event.target.id, event.target.files[0])
+
+        axios({
+          url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteCheckList',
+          method: 'post',
+          // headers: {
+          //   'Access-Control-Allow-Origin': '*',
+          //   'Content-type': 'application/json',
+          //   'Accept': 'application/json',
+          // },
+          data: bodyFormData,
+          // data: JSON.stringify({
+          //   UserName: this.userName,
+          //   UserPassword: this.password,
+          //   SupervisingFirmID: this.selFirmID,
+          //   RequestType: '4',
+          // }),
+
+        }).then(response => {
+          console.log(response)
+
+          this.check_list_loading = false
+
+          alert('Site Checklist Updated!!')
+        }).catch(err => {
+          console.log(err)
+
+          this.check_list_loading = false
+        })
+
+        // const src = URL.createObjectURL(event.target.files[0])
+        // const preview = document.getElementById('previewImg')
+        // preview.src = src
         // preview.style.display = "block";
       }
 
-      this.file = this.$refs.file.files[0]
+
     },
 
   },
