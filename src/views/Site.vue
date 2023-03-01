@@ -781,7 +781,7 @@ export default {
 
     async submitForm() {
       this.site_supervision_loading = true
-      await this.clearSiteSupervisionAnswers()
+      // await this.clearSiteSupervisionAnswers()
       const SupervisionDate = '2023-02-20'
       const WorkCommencementDate = '2023-02-20'
       const LocationID = this.$route.params.id
@@ -798,6 +798,7 @@ export default {
       bodyFormData.append('UserID', UserID)
 
       for (let index = 0; index < this.siteSupervionsItems.length; index++) {
+
         bodyFormData.append(this.siteSupervionsItems[index], 'ON')
 
         console.log(this.siteSupervions[index].fielsCheckBoxName)
@@ -920,11 +921,9 @@ export default {
                     == stage))
 
       questions.forEach(element => {
-        if (element.responseDataType == 'FILE') {
-          bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).file.files[0])
-        } else {
+        
           bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).value)
-        }
+      
       })
 
       this.check_list_loading = true

@@ -231,9 +231,13 @@ export default {
 
         }).then(response => {
           console.log(response)
+      this.assign_loading = true
+
 
           // alert('got it')
         }).catch(err => {
+      this.assign_loading = true
+
           alert(err)
         })
 
