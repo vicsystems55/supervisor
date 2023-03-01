@@ -254,6 +254,13 @@
                     <label for="">{{ siteCheck.reportQuestion }}</label><br>
                     <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
 
+                    <div class="c">
+                    <img :src="siteCheck.responses" alt="" style="width: 120px; height: 120px; object-fit: cover;">
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
+
                     <input
                       :id="siteCheck.fieldAttributeName"
                       type="file"
