@@ -168,8 +168,11 @@
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
                       id=""
+                      :id="siteCheck.fieldAttributeName"
                       name=""
                       class="form-control"
+                      :name="siteCheck.fieldAttributeName"
+                      :value="siteCheck.responses"
                     >
                       <option value="">
                         Yes
@@ -187,8 +190,11 @@
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
                       id=""
+                      :id="siteCheck.fieldAttributeName"
                       name=""
                       class="form-control"
+                      :name="siteCheck.fieldAttributeName"
+                      :value="siteCheck.responses"
                     >
                       <option value="">
                         Yes
@@ -209,6 +215,7 @@
                       type="text"
                       class="form-control"
                       :name="siteCheck.fieldAttributeName"
+                      :value="siteCheck.responses"
                     >
                   </div>
 
@@ -218,8 +225,11 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <input
+                      :id="siteCheck.fieldAttributeName"
                       type="text"
                       class="form-control"
+                      :name="siteCheck.fieldAttributeName"
+                      :value="siteCheck.responses"
                     >
                   </div>
 
@@ -229,8 +239,11 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <input
+                      :id="siteCheck.fieldAttributeName"
                       type="number"
                       class="form-control"
+                      :name="siteCheck.fieldAttributeName"
+                      :value="siteCheck.responses"
                     >
                   </div>
 
@@ -240,8 +253,10 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label><br>
                     <input
+                      :id="siteCheck.fieldAttributeName"
                       type="file"
                       class="form-file"
+                      :name="siteCheck.fieldAttributeName"
                     >
                   </div>
                 </div>
@@ -251,9 +266,9 @@
               <div class="form-group">
                 <button
                   class="btn btn-primary"
-                  @click="submitChecklist(siteCheck.criticalStageName)"
+                  @click="submitChecklist('CRITICALSTAGE1')"
                 >
-                  Submit
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
                 </button>
               </div>
             </b-card-text>
@@ -525,6 +540,8 @@ export default {
       localGovtName: '',
       lotDescription: '',
       locationID: '',
+
+      check_list_loading: false,
 
       siteSupervionsItems: [],
 
@@ -873,15 +890,34 @@ export default {
     },
 
     async submitChecklist(stage) {
+      const SupervisionDate = '2023-02-20'
+      const WorkCommencementDate = '2023-02-20'
+      const LocationID = this.$route.params.id
+      const UserID = localStorage.getItem('userID')
+
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('SupervisionDate', SupervisionDate)
+
+      bodyFormData.append('WorkCommencementDate', WorkCommencementDate)
+
+      bodyFormData.append('LocationID', LocationID)
+
+      bodyFormData.append('UserID', UserID)
+
       let questions = []
       questions = this.siteChecklist.filter(element => (element.criticalStageName
                     == stage))
 
-      const bodyFormData = FormData()
-
       questions.forEach(element => {
-        bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).value)
+        if (element.responseDataType == 'FILE') {
+          bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).file.files[0])
+        } else {
+          bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).value)
+        }
       })
+
+      this.check_list_loading = true
 
       await axios({
         url: 'http://api.tpsapp.net/api/Supervisions/SubmitSiteCheckList',
@@ -902,15 +938,27 @@ export default {
       }).then(response => {
         console.log(response)
 
-       
+        this.check_list_loading = false
 
         alert('Site Checklist Updated!!')
-
       }).catch(err => {
         console.log(err)
+
+        this.check_list_loading = false
       })
+    },
 
+    previewFile4(event) {
+      console.log(event)
 
+      if (event.target.files.length > 0) {
+        const src = URL.createObjectURL(event.target.files[0])
+        const preview = document.getElementById('previewImg')
+        preview.src = src
+        // preview.style.display = "block";
+      }
+
+      this.file = this.$refs.file.files[0]
     },
 
   },
