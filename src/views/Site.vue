@@ -165,20 +165,22 @@
                     v-if="siteCheck.responseDataType=='Select'"
                     class="form-group"
                   >
-                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.defaultValueHTML }}</label>
                     <select
-                      id=""
+                   
                       :id="siteCheck.fieldAttributeName"
                       name=""
                       class="form-control"
                       :name="siteCheck.fieldAttributeName"
                       :value="siteCheck.responses"
                     >
-                      <option value="">
-                        Yes
-                      </option>
-                      <option value="">
-                        No
+                      <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+              
+                      >
+                        {{ option }}
                       </option>
                     </select>
                   </div>
@@ -189,18 +191,19 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
-                      id=""
+               
                       :id="siteCheck.fieldAttributeName"
                       name=""
                       class="form-control"
                       :name="siteCheck.fieldAttributeName"
                       :value="siteCheck.responses"
                     >
-                      <option value="">
-                        Yes
-                      </option>
-                      <option value="">
-                        No
+                      <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                  
+                      >
+                        {{ option }}
                       </option>
                     </select>
                   </div>
@@ -255,11 +258,14 @@
                     <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
 
                     <div class="c">
-                    <img :src="siteCheck.responses" alt="" style="width: 120px; height: 120px; object-fit: cover;">
+                      <img
+                        :src="siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
 
                     </div>
                     <label for="">{{ siteCheck.responses }}</label><br>
-
 
                     <input
                       :id="siteCheck.fieldAttributeName"
@@ -303,12 +309,14 @@
                       name=""
                       class="form-control"
                     >
-                      <option value="">
-                        Yes
+                      <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                     
+                      >
+                        {{ option }}
                       </option>
-                      <option value="">
-                        No
-                      </option>
+
                     </select>
                   </div>
 
@@ -322,11 +330,12 @@
                       name=""
                       class="form-control"
                     >
-                      <option value="">
-                        Yes
-                      </option>
-                      <option value="">
-                        No
+                      <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                     
+                      >
+                        {{ option }}
                       </option>
                     </select>
                   </div>
@@ -781,7 +790,7 @@ export default {
 
     async submitForm() {
       this.site_supervision_loading = true
-      // await this.clearSiteSupervisionAnswers()
+      await this.clearSiteSupervisionAnswers()
       const SupervisionDate = '2023-02-20'
       const WorkCommencementDate = '2023-02-20'
       const LocationID = this.$route.params.id
@@ -798,8 +807,7 @@ export default {
       bodyFormData.append('UserID', UserID)
 
       for (let index = 0; index < this.siteSupervionsItems.length; index++) {
-
-        bodyFormData.append(this.siteSupervionsItems[index], 'ON')
+        bodyFormData.append(this.siteSupervionsItems[index], '1')
 
         console.log(this.siteSupervions[index].fielsCheckBoxName)
       }
@@ -921,9 +929,7 @@ export default {
                     == stage))
 
       questions.forEach(element => {
-        
-          bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).value)
-      
+        bodyFormData.append(element.fieldAttributeName, document.getElementById(element.fieldAttributeName).value)
       })
 
       this.check_list_loading = true
@@ -960,7 +966,6 @@ export default {
     previewFile4(event) {
       console.log(event)
       console.log(event.target.files[0])
-
 
       if (event.target.files.length > 0) {
         const SupervisionDate = '2023-02-20'
@@ -1013,8 +1018,12 @@ export default {
         // preview.src = src
         // preview.style.display = "block";
       }
+    },
 
-
+    convertComma(commaStrings) {
+      alert(commaStrings)
+      var array = commaStrings.split(",");
+      return array;
     },
 
   },
