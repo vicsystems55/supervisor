@@ -127,6 +127,8 @@ const router = new VueRouter({
       },
     },
 
+
+
     {
       path: '/users',
       name: 'users',
@@ -213,6 +215,16 @@ const router = new VueRouter({
         layout: 'full',
       },
     },
+
+    {
+      path: '/update-site',
+      name: 'update-site',
+      component: () => import('@/views/UploadSiteReport.vue'),
+      meta: {
+        layout: 'full',
+      },
+    },
+
     {
       path: '/error-404',
       name: 'error-404',

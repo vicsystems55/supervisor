@@ -1,24 +1,134 @@
 <template>
-  <b-card title="Create Awesome 🙌">
-    <b-card-text>This is your second page.
+  <!-- Error page-->
+  <div class="misc-wrapper">
+    <b-link class="brand-logo">
 
-      <button class="btn btn-primary ">get</button>
-    </b-card-text>
-    <b-card-text>Chocolate sesame snaps pie carrot cake pastry pie lollipop muffin. Carrot cake dragée chupa chups jujubes. Macaroon liquorice cookie wafer tart marzipan bonbon. Gingerbread jelly-o dragée chocolate.</b-card-text>
-  </b-card>
+      <h2 class="brand-text text-primary ml-1">
+        TPSAPP
+      </h2>
+    </b-link>
+
+    <div class="container">
+      <!-- radio button -->
+
+      <!-- types -->
+      <div class="col-md-10 mx-auto">
+        <app-collapse
+          accordion
+          :type="'shadow'"
+        >
+
+          <app-collapse-item
+            v-for="contract in contracts"
+            :key="contract.id"
+            :title="contract.contractDescription"
+
+           @change="alert('ser')"
+       
+          >
+          <button      @click="getLots(contract.contractID)" class="btn btn-primary text-center">load lots</button>
+            <table class="table table-responsive">
+              <tbody>
+                <tr v-for="lot in lots" :key="lot.id">
+                  <td style="width: 90px;" class="">
+                    {{ lot.lotDescription }}
+                  </td>
+                  <td>
+                    <a class="btn btn-primary btn-sm" :href="'https://api.tpsapp.net/api/Supervisions/DownLoadSupervisionExcel/'+lot.lotID">download supervision</a>
+                  </td>
+
+                  <td>
+                    <a class="btn btn-primary btn-sm" :href="'https://api.tpsapp.net/api/Supervisions/DownLoadCheckSupervisionExcel/'+lot.lotID">download checklist</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </app-collapse-item>
+
+        </app-collapse>
+      </div>
+    </div>
+  </div>
+<!-- / Error page-->
 </template>
 
 <script>
-import { BCard, BCardText } from 'bootstrap-vue'
+/* eslint-disable global-require */
+import axios from 'axios'
+import store from '@/store/index'
+import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import {
+  BFormRadioGroup, BFormRadio, BFormGroup, BLink,
+} from 'bootstrap-vue'
 
 export default {
   components: {
-    BCard,
-    BCardText,
+
+    BLink,
+
+    AppCollapse,
+    AppCollapseItem,
+
+    BFormRadioGroup,
+    BFormRadio,
+    BFormGroup,
+  },
+  data() {
+    return {
+      downImg: require('@/assets/images/pages/error.svg'),
+      contracts: [],
+      lots: [],
+    }
+  },
+  computed: {
+    imgUrl() {
+      if (store.state.appConfig.layout.skin === 'dark') {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.downImg = require('@/assets/images/pages/error-dark.svg')
+        return this.downImg
+      }
+      return this.downImg
+    },
+  },
+
+  mounted() {
+    this.getContracts()
+  },
+
+  methods: {
+    getContracts() {
+      axios({
+        url: 'https://api.tpsapp.net/api/Contract',
+        method: 'get',
+
+      }).then(response => {
+        this.contracts = response.data
+        console.log(response)
+        console.log('got it')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    getLots(contractID) {
+
+      axios({
+        url: `https://api.tpsapp.net/api/Supervisions/GetSupervisionLots/${contractID}`,
+        method: 'get',
+
+      }).then(response => {
+        this.lots = response.data
+        console.log(response)
+        console.log('got it')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   },
 }
 </script>
 
-<style>
-
+<style lang="scss">
+@import '@core/scss/vue/pages/page-misc.scss';
 </style>

@@ -165,8 +165,8 @@
                     v-if="siteCheck.responseDataType=='Select'"
                     class="form-group"
                   >
-                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
-                    <label for="">{{ siteCheck.defaultValueHTML }}</label>
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                  
                     <select
                    
                       :id="siteCheck.fieldAttributeName"
@@ -259,7 +259,7 @@
 
                     <div class="c">
                       <img
-                        :src="siteCheck.responses"
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
                         alt=""
                         style="width: 120px; height: 120px; object-fit: cover;"
                       >
@@ -935,7 +935,7 @@ export default {
       this.check_list_loading = true
 
       await axios({
-        url: 'http://api.tpsapp.net/api/Supervisions/SubmitSiteCheckList',
+        url: 'https://api.tpsapp.net/api/Supervisions/SubmitSiteCheckList',
         method: 'post',
         // headers: {
         //   'Access-Control-Allow-Origin': '*',
@@ -1021,7 +1021,7 @@ export default {
     },
 
     convertComma(commaStrings) {
-      alert(commaStrings)
+  
       var array = commaStrings.split(",");
       return array;
     },
