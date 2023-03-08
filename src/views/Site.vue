@@ -166,9 +166,9 @@
                     class="form-group"
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
-                  
+
                     <select
-                   
+
                       :id="siteCheck.fieldAttributeName"
                       name=""
                       class="form-control"
@@ -178,7 +178,6 @@
                       <option
                         v-for="option in convertComma(siteCheck.defaultValueHTML)"
                         :key="option.id"
-              
                       >
                         {{ option }}
                       </option>
@@ -191,7 +190,7 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
-               
+
                       :id="siteCheck.fieldAttributeName"
                       name=""
                       class="form-control"
@@ -201,7 +200,6 @@
                       <option
                         v-for="option in convertComma(siteCheck.defaultValueHTML)"
                         :key="option.id"
-                  
                       >
                         {{ option }}
                       </option>
@@ -305,14 +303,14 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
-                      id=""
-                      name=""
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
                       class="form-control"
+                      :value="siteCheck.responses"
                     >
                       <option
                         v-for="option in convertComma(siteCheck.defaultValueHTML)"
                         :key="option.id"
-                     
                       >
                         {{ option }}
                       </option>
@@ -326,14 +324,14 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
-                      id=""
-                      name=""
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                       class="form-control"
                     >
                       <option
                         v-for="option in convertComma(siteCheck.defaultValueHTML)"
                         :key="option.id"
-                     
                       >
                         {{ option }}
                       </option>
@@ -348,6 +346,9 @@
                     <input
                       type="text"
                       class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                     >
                   </div>
 
@@ -359,6 +360,9 @@
                     <input
                       type="text"
                       class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                     >
                   </div>
 
@@ -370,6 +374,9 @@
                     <input
                       type="number"
                       class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                     >
                   </div>
 
@@ -378,13 +385,37 @@
                     class="form-group"
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
+                    <div class="c">
+                      <img
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
                     <input
+                      :id="siteCheck.fieldAttributeName"
                       type="file"
                       class="form-file"
+                      :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
                     >
                   </div>
                 </div>
 
+              </div>
+
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist('CRITICALSTAGE2')"
+                >
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
+                </button>
               </div>
             </b-card-text>
           </b-tab>
@@ -405,15 +436,16 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
-                      id=""
-                      name=""
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                       class="form-control"
                     >
-                      <option value="">
-                        Yes
-                      </option>
-                      <option value="">
-                        No
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
                       </option>
                     </select>
                   </div>
@@ -424,15 +456,16 @@
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label>
                     <select
-                      id=""
-                      name=""
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                       class="form-control"
                     >
-                      <option value="">
-                        Yes
-                      </option>
-                      <option value="">
-                        No
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
                       </option>
                     </select>
                   </div>
@@ -445,6 +478,9 @@
                     <input
                       type="text"
                       class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                     >
                   </div>
 
@@ -456,6 +492,9 @@
                     <input
                       type="text"
                       class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                     >
                   </div>
 
@@ -467,6 +506,9 @@
                     <input
                       type="number"
                       class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
                     >
                   </div>
 
@@ -475,53 +517,593 @@
                     class="form-group"
                   >
                     <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
+                    <div class="c">
+                      <img
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
                     <input
+                      :id="siteCheck.fieldAttributeName"
                       type="file"
                       class="form-file"
+                      :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
                     >
                   </div>
                 </div>
 
               </div>
+
+
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist('CRITICALSTAGE3')"
+                >
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
+                </button>
+              </div>
             </b-card-text>
           </b-tab>
           <b-tab title="4">
             <b-card-text>
-              4 Carrot cake dragée chocolate. Lemon drops ice cream wafer gummies dragée. Chocolate bar
-              liquorice cheesecake cookie chupa chups marshmallow oat cake biscuit. Dessert toffee
-              fruitcake ice cream powder tootsie roll cake.Chocolate bonbon chocolate chocolate cake
-              halvah tootsie roll marshmallow. Brownie chocolate toffee toffee jelly beans bonbon sesame
-              snaps sugar plum candy canes.
+              <div class="row">
+
+                <div
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE4')"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
+                    <div class="c">
+                      <img
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
+                    <input
+                      :id="siteCheck.fieldAttributeName"
+                      type="file"
+                      class="form-file"
+                      :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
+                    >
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist('CRITICALSTAGE4')"
+                >
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
+                </button>
+              </div>
             </b-card-text>
           </b-tab>
 
           <b-tab title="5">
             <b-card-text>
-              5 Carrot cake dragée chocolate. Lemon drops ice cream wafer gummies dragée. Chocolate bar
-              liquorice cheesecake cookie chupa chups marshmallow oat cake biscuit. Dessert toffee
-              fruitcake ice cream powder tootsie roll cake.Chocolate bonbon chocolate chocolate cake
-              halvah tootsie roll marshmallow. Brownie chocolate toffee toffee jelly beans bonbon sesame
-              snaps sugar plum candy canes.
+              <div class="row">
+
+                <div
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE5')"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                          :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
+                    <div class="c">
+                      <img
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
+                    <input
+                      :id="siteCheck.fieldAttributeName"
+                      type="file"
+                      class="form-file"
+                      :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
+                    >
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist('CRITICALSTAGE5')"
+                >
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
+                </button>
+              </div>
             </b-card-text>
           </b-tab>
 
           <b-tab title="6">
             <b-card-text>
-              6 Carrot cake dragée chocolate. Lemon drops ice cream wafer gummies dragée. Chocolate bar
-              liquorice cheesecake cookie chupa chups marshmallow oat cake biscuit. Dessert toffee
-              fruitcake ice cream powder tootsie roll cake.Chocolate bonbon chocolate chocolate cake
-              halvah tootsie roll marshmallow. Brownie chocolate toffee toffee jelly beans bonbon sesame
-              snaps sugar plum candy canes.
+              <div class="row">
+
+                <div
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE6')"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+                
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
+                    <div class="c">
+                      <img
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
+                    <input
+                      :id="siteCheck.fieldAttributeName"
+                      type="file"
+                      class="form-file"
+                      :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
+                    >
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist('CRITICALSTAGE6')"
+                >
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
+                </button>
+              </div>
             </b-card-text>
           </b-tab>
 
           <b-tab title="7">
             <b-card-text>
-              6 Carrot cake dragée chocolate. Lemon drops ice cream wafer gummies dragée. Chocolate bar
-              liquorice cheesecake cookie chupa chups marshmallow oat cake biscuit. Dessert toffee
-              fruitcake ice cream powder tootsie roll cake.Chocolate bonbon chocolate chocolate cake
-              halvah tootsie roll marshmallow. Brownie chocolate toffee toffee jelly beans bonbon sesame
-              snaps sugar plum candy canes.
+              <div class="row">
+
+                <div
+                  v-for="siteCheck in sortCheckList('CRITICALSTAGE7')"
+                  :key="siteCheck.id"
+                  class="col-md-6"
+                >
+
+          
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Select '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <select
+                    :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                      class="form-control"
+                    >
+                    <option
+                        v-for="option in convertComma(siteCheck.defaultValueHTML)"
+                        :key="option.id"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                          :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Text '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number'"
+                    class="form-group"
+                  >
+                  {{ siteCheck.questionID }}
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                          :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='Number '"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      :id="siteCheck.fieldAttributeName"
+                    :name="siteCheck.fieldAttributeName"
+:value="siteCheck.responses"
+                    >
+                  </div>
+
+                  <div
+                    v-if="siteCheck.responseDataType=='FILE'"
+                    class="form-group"
+                  >
+                    <label for="">{{ siteCheck.reportQuestion }}</label><br>
+                    <label for="">{{ siteCheck.fieldAttributeName }}</label><br>
+
+                    <div class="c">
+                      <img
+                        :src="'https://api.tpsapp.net/'+siteCheck.responses"
+                        alt=""
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      >
+
+                    </div>
+                    <label for="">{{ siteCheck.responses }}</label><br>
+
+                    <input
+                      :id="siteCheck.fieldAttributeName"
+                      type="file"
+                      class="form-file"
+                      :name="siteCheck.fieldAttributeName"
+                      @change="previewFile4"
+                    >
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="submitChecklist('CRITICALSTAGE7')"
+                >
+                  {{ check_list_loading?'Just chill...':'Submit Checklist' }}
+                </button>
+              </div>
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -603,6 +1185,19 @@ export default {
         })
 
         console.log(this.siteSupervionsItems)
+
+        const siteCommentsItemsj = this.siteComments
+          .filter(element => (element.added
+                    === true))
+
+        console.log(siteCommentsItemsj)
+
+        // eslint-disable-next-line no-unused-expressions
+        siteCommentsItemsj.forEach(siteCommentsItem => {
+          this.siteCommentsItems.push(siteCommentsItem.fieldCheckBoxName)
+        })
+
+        console.log(this.siteCommentsItems)
 
         //   this.siteSupervions.forEach(siteSupervision => {
         //   bodyFormData.append(siteSupervision.fielsCheckBoxName, 'OFF')
@@ -759,7 +1354,7 @@ export default {
       // }
 
       this.siteComments.forEach(siteComment => {
-        bodyFormData.append(siteComment.fielsCheckBoxName, 'OFF')
+        bodyFormData.append(siteComment.fieldCheckBoxName, 'OFF')
       })
 
       // console.log(this.siteComments[0].fielsCheckBoxName)
@@ -807,7 +1402,7 @@ export default {
       bodyFormData.append('UserID', UserID)
 
       for (let index = 0; index < this.siteSupervionsItems.length; index++) {
-        bodyFormData.append(this.siteSupervionsItems[index], '1')
+        bodyFormData.append(this.siteSupervionsItems[index], 'ON')
 
         console.log(this.siteSupervions[index].fielsCheckBoxName)
       }
@@ -1021,9 +1616,8 @@ export default {
     },
 
     convertComma(commaStrings) {
-  
-      var array = commaStrings.split(",");
-      return array;
+      const array = commaStrings.split(',')
+      return array
     },
 
   },

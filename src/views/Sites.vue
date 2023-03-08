@@ -58,14 +58,16 @@
               <th>Facility Type</th>
               <th>Lot No.</th>
 
-              <th />
+            
             </tr>
           </thead>
           <tbody>
+           
             <tr
               v-for="site,key in sites"
               :key="site.id"
             >
+          
               <td>
                 <input
                   :id="'check'+site.locationID"
@@ -79,7 +81,12 @@
               </td>
 
               <td>
+                <router-link
+                  :to="'/site/'+site.locationID"
+                  class=""
+                >
                 {{ site.locationName }}
+              </router-link>
               </td>
               <td>
                 {{ site.wardName }}
@@ -101,14 +108,10 @@
                 {{ site.lotNo }}
               </td>
 
-              <td>
-                <router-link
-                  :to="'/site/'+site.locationID"
-                  class="btn btn-sm btn-primary"
-                >
-                  view </router-link>
-              </td>
+              
+      
             </tr>
+
 
           </tbody>
         </table>

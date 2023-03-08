@@ -226,6 +226,15 @@ const router = new VueRouter({
     },
 
     {
+      path: '/update-site/:id',
+      name: 'update-site-details',
+      component: () => import('@/views/UploadSiteReportDetails.vue'),
+      meta: {
+        layout: 'full',
+      },
+    },
+
+    {
       path: '/error-404',
       name: 'error-404',
       component: () => import('@/views/error/Error404.vue'),

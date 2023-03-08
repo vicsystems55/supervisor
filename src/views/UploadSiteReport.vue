@@ -11,8 +11,23 @@
     <div class="container">
       <!-- radio button -->
 
+      <h4 class="py-5">All Contracts</h4>
+
+      <div class="row d-non">
+        <div v-for="contract in contracts"
+            :key="contract.id" class="col-md-6">
+         <router-link :to="'update-site/'+contract.contractID">
+          <div class="card shadow btn">
+            <div class="card-body">
+              <h6 class="">{{ contract.contractDescription }}</h6>
+            </div>
+          </div>
+        </router-link>
+        </div>
+      </div>
+
       <!-- types -->
-      <div class="col-md-10 mx-auto">
+      <div class="col-md-10 mx-auto d-none">
         <app-collapse
           accordion
           :type="'shadow'"
