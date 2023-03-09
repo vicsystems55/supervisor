@@ -44,6 +44,29 @@
     </div>
 
     <div class="card">
+      <div class="card-body">
+        <div class="col-md-6 mx-auto">
+          <div class="form-group">
+            <input
+              v-model="searchKey"
+              type="text"
+              class="form-control"
+              placeholder="Search by Site name, State name or Contractor name..."
+            >
+          </div>
+        </div>
+        <div class="text-center">
+          <button
+            class="btn btn-primary"
+            @click="filterData()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
       <div class="card-body table-responsive">
         <table class="table">
           <thead>
@@ -58,16 +81,15 @@
               <th>Facility Type</th>
               <th>Lot No.</th>
 
-            
             </tr>
           </thead>
           <tbody>
-           
+
             <tr
               v-for="site,key in sites"
               :key="site.id"
             >
-          
+
               <td>
                 <input
                   :id="'check'+site.locationID"
@@ -85,8 +107,8 @@
                   :to="'/site/'+site.locationID"
                   class=""
                 >
-                {{ site.locationName }}
-              </router-link>
+                  {{ site.locationName }}
+                </router-link>
               </td>
               <td>
                 {{ site.wardName }}
@@ -108,10 +130,7 @@
                 {{ site.lotNo }}
               </td>
 
-              
-      
             </tr>
-
 
           </tbody>
         </table>
@@ -144,6 +163,8 @@ export default {
       noSelSites: 0,
 
       assign_loading: false,
+
+      searchKey: '',
 
     }
   },
@@ -234,20 +255,34 @@ export default {
 
         }).then(response => {
           console.log(response)
-      this.assign_loading = true
-
+          this.assign_loading = false
 
           // alert('got it')
         }).catch(err => {
-      this.assign_loading = true
+          this.assign_loading = false
 
           alert(err)
         })
 
         if (this.selSiteIds[index] == this.selSiteIds.length) {
-          
           this.assign_loading = false
         }
+      }
+    },
+
+    filterData() {
+      if (this.searchKey) {
+        this.sites = this.sites
+          .filter(element => (element.locationName
+                      === this.searchKey || element.stateName
+                      === this.searchKey))
+
+        console.log(this.sites)
+
+        return this.sites
+      }else{
+        this.mounted()
+
       }
     },
 
