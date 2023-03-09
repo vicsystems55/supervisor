@@ -75,41 +75,66 @@
             {{ sup_loading?'Generating excel...':'Download Supervision' }}
           </button>
 
-          
+          <div
+            v-if="current_lot==lot.lotID"
+            class="showz"
+          >
+            <a
+              v-for="lnk in new_link"
+              :id="'btn'+lot.lotID"
+              :key="lnk.index"
+              :href="'https://api.tpsapp.net/'+lnk"
+              class="d-non m-1 btn-block"
+              target="_blank"
+              download=""
+            >{{ lnk }}</a> <br>
 
-          <a
-            v-for="lnk in new_link"
-            :id="'btn'+lot.lotID"
-            :href="'https://api.tpsapp.net/'+lnk"
-            class="d-non m-1 btn-block"
-            target="_blank"
-            download=""
-          >{{ lnk }}</a> <br>
+            <a
+              :id="'btn2'+lot.lotID"
+              :href="new_link2"
+              class="d-non m-1"
+              target="_blank"
+            >{{ new_link2 }}</a>
+            <hr>
+            <h6 class="py-2">
+              Upload Checklist Excel
+            </h6>
+            <div class="form-group">
 
-          <a
-            :id="'btn2'+lot.lotID"
-            :href="new_link2"
-            class="d-non m-1"
-            target="_blank"
-          >{{new_link2}}</a>
+              <input
+                id="pu"
+                type="file"
+                class="form-file"
+                @change="previewChecklistFile"
+              >
 
-          <hr>
-          <h6 class="py-2">Upload Checklist Excel</h6>
-          <div class="form-group">
-          
-            <input type="file" id="pu" class="form-file">
-        
             </div>
-            <div class="form-group"><button class="btn btn-warning">Upload Checklist</button></div>
+            <div class="form-group">
+              <button  class="btn btn-warning">
+               {{ uploading_checklist?'Uploading...':'Upload Checklist' }}
+              </button>
+            </div>
 
             <hr>
-          <h6 class="py-2">Upload Supervision Excel</h6>
-          <div class="form-group">
-          
-            <input type="file" id="pu" class="form-file">
-        
+            <h6 class="py-2">
+                {{ uploading_supervision?'Uploading...':'Upload Supervision' }}
+            </h6>
+            <div class="form-group">
+
+              <input
+                id="pu"
+                type="file"
+                class="form-file"
+                @change="previewSupervisionFile"
+              >
+
             </div>
-            <div class="form-group"><button class="btn btn-info">Upload Supervision</button></div>
+            <div class="form-group">
+              <button class="btn btn-info">
+                Upload Supervision
+              </button>
+            </div>
+          </div>
 
         </app-collapse-item>
 
@@ -150,6 +175,12 @@ export default {
       new_link2: '',
       check_loading: false,
       sup_loading: false,
+      current_lot: '',
+      current_checklist_excel: '',
+      current_supervision_excel: '',
+
+      upload_checklist: false,
+      upload_supervision: false
     }
   },
   computed: {
@@ -206,6 +237,8 @@ export default {
 
     generateChecklistExcel(lotID) {
       this.check_loading = true
+
+      this.current_lot = lotID
       axios({
         url: `https://api.tpsapp.net/api/Supervisions/DownLoadCheckSupervisionExcel/${lotID}`,
         method: 'get',
@@ -225,6 +258,7 @@ export default {
 
     generateSupervisionExcel(lotID) {
       this.sup_loading = true
+      this.current_lot = lotID
 
       axios({
         url: `https://api.tpsapp.net/api/Supervisions/DownLoadSupervisionExcel/${lotID}`,
@@ -245,50 +279,62 @@ export default {
     },
 
     convertComma(commaStrings) {
-        console.log(commaStrings)
-      this.new_link = commaStrings.split(",")
+      console.log(commaStrings)
+      this.new_link = commaStrings.split(',')
     },
 
-    uploadChecklistExcel(lotID) {
-      this.check_loading = true
+    previewChecklistFile(event) {
+      [this.current_checklist_excel] = event.target.files
+      console.log(this.current_checklist_excel)
+    },
+
+    previewSupervisionFile(event) {
+      [this.current_supervision_excel] = event.target.files
+      console.log(this.current_supervision_excel)
+    },
+
+    uploadChecklistExcel() {
+
+    this.upload_checklist  =true
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('formFile', this.current_checklist_excel)
+
       axios({
-        url: `https://api.tpsapp.net/api/Supervisions/DownLoadCheckSupervisionExcel/${lotID}`,
-        method: 'get',
+        url: 'http://api.tpsapp.net/api/Supervisions/UploadCheckListSupervisionExcel',
+        method: 'post',
+        data: bodyFormData,
 
-      }).then(async response => {
-        this.check_loading = false
-
+      }).then(response => {
+    this.upload_checklist  =false
         console.log(response)
-        console.log('got it')
-
-        await this.generateLink(response.data, lotID)
       }).catch(err => {
-        this.check_loading = false
+    this.upload_checklist  =false
+
         console.log(err)
       })
     },
 
     uploadSupervisionExcel(lotID) {
-      this.sup_loading = true
+      const bodyFormData = new FormData()
 
-      axios({
-        url: `https://api.tpsapp.net/api/Supervisions/DownLoadSupervisionExcel/${lotID}`,
-        method: 'get',
+      //   axios({
+      //     url: `https://api.tpsapp.net/api/Supervisions/DownLoadSupervisionExcel/${lotID}`,
+      //     method: 'get',
 
-      }).then(response => {
-        this.sup_loading = false
+      //   }).then(response => {
+      //     this.sup_loading = false
 
-        this.new_link2 = `https://api.tpsapp.net/${response.data}`
+      //     this.new_link2 = `https://api.tpsapp.net/${response.data}`
 
-        // document.getElementById(`btn2${lotID}`).removeClass('d-none')
-        console.log(response)
-        console.log('got it2')
-      }).catch(err => {
-        this.sup_loading = false
-        console.log(err)
-      })
+    //     // document.getElementById(`btn2${lotID}`).removeClass('d-none')
+    //     console.log(response)
+    //     console.log('got it2')
+    //   }).catch(err => {
+    //     this.sup_loading = false
+    //     console.log(err)
+    //   })
     },
-
 
   },
 }
