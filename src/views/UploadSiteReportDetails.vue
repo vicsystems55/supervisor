@@ -79,6 +79,7 @@
             v-if="current_lot==lot.lotID"
             class="showz"
           >
+            <p>Links to checklists</p>
             <a
               v-for="lnk in new_link"
               :id="'btn'+lot.lotID"
@@ -87,7 +88,9 @@
               class="d-non m-1 btn-block"
               target="_blank"
               download=""
-            >{{ lnk }}</a> <br>
+            >https://api.tpsapp.net/{{ lnk }}</a> <br>
+
+            <p>Link to supervision</p>
 
             <a
               :id="'btn2'+lot.lotID"
@@ -110,14 +113,18 @@
 
             </div>
             <div class="form-group">
-              <button  class="btn btn-warning">
-               {{ uploading_checklist?'Uploading...':'Upload Checklist' }}
+              <button
+                class="btn btn-warning"
+                :disabled="uploading_checklist?true:false"
+                @click="uploadChecklistExcel"
+              >
+                {{ uploading_checklist?'Uploading...':'Upload Checklist' }}
               </button>
             </div>
 
             <hr>
             <h6 class="py-2">
-                {{ uploading_supervision?'Uploading...':'Upload Supervision' }}
+              Upload Supervision Excel
             </h6>
             <div class="form-group">
 
@@ -130,8 +137,12 @@
 
             </div>
             <div class="form-group">
-              <button class="btn btn-info">
-                Upload Supervision
+              <button
+                class="btn btn-info"
+                :disabled="uploading_supervision?true:false"
+                @click="uploadSupervisionExcel"
+              >
+                {{ uploading_supervision?'Uploading...':'Upload Supervision' }}
               </button>
             </div>
           </div>
@@ -179,8 +190,8 @@ export default {
       current_checklist_excel: '',
       current_supervision_excel: '',
 
-      upload_checklist: false,
-      upload_supervision: false
+      uploading_checklist: false,
+      uploading_supervision: false,
     }
   },
   computed: {
@@ -294,46 +305,45 @@ export default {
     },
 
     uploadChecklistExcel() {
-
-    this.upload_checklist  =true
+      this.uploading_checklist = true
       const bodyFormData = new FormData()
 
       bodyFormData.append('formFile', this.current_checklist_excel)
 
       axios({
-        url: 'http://api.tpsapp.net/api/Supervisions/UploadCheckListSupervisionExcel',
+        url: 'https://api.tpsapp.net/api/Supervisions/UploadCheckListSupervisionExcel',
         method: 'post',
         data: bodyFormData,
 
       }).then(response => {
-    this.upload_checklist  =false
+        this.uploading_checklist = false
         console.log(response)
       }).catch(err => {
-    this.upload_checklist  =false
+        this.uploading_checklist = false
 
         console.log(err)
       })
     },
 
-    uploadSupervisionExcel(lotID) {
+    uploadSupervisionExcel() {
+      this.uploading_supervision = true
       const bodyFormData = new FormData()
 
-      //   axios({
-      //     url: `https://api.tpsapp.net/api/Supervisions/DownLoadSupervisionExcel/${lotID}`,
-      //     method: 'get',
+      bodyFormData.append('formFile', this.current_supervision_excel)
 
-      //   }).then(response => {
-      //     this.sup_loading = false
+      axios({
+        url: 'https://api.tpsapp.net/api/Supervisions/UploadSupervisionExcel',
+        method: 'post',
+        data: bodyFormData,
 
-      //     this.new_link2 = `https://api.tpsapp.net/${response.data}`
+      }).then(response => {
+        this.uploading_supervision = false
+        console.log(response)
+      }).catch(err => {
+        this.uploading_supervision = false
 
-    //     // document.getElementById(`btn2${lotID}`).removeClass('d-none')
-    //     console.log(response)
-    //     console.log('got it2')
-    //   }).catch(err => {
-    //     this.sup_loading = false
-    //     console.log(err)
-    //   })
+        console.log(err)
+      })
     },
 
   },
