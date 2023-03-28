@@ -280,10 +280,8 @@ export default {
         console.log(this.sites)
 
         return this.sites
-      }else{
-        this.mounted()
-
       }
+      this.mounted()
     },
 
   },
