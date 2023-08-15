@@ -22,6 +22,8 @@
       <div class="card-body col-md-6">
         <h6>Create programme</h6>
         <div class="form-group">
+          <label for="">Programme Name: </label>
+
           <input
             type="text"
             class="form-control"
@@ -29,22 +31,33 @@
             v-model="programmeName"
           >
         </div>
+
+        <div class="form-group">
+          <label for="">Programme Code: </label>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Programme code"
+            v-model="programmeCode"
+          >
+        </div>
         <div class="form-group">
           <label for="">Supervising Firm: </label>
-          <select name="" id="" class="form-control">
+          <select v-model="SupervisingFirmID" id="" class="form-control">
             <option :value="'1'">ROBILOR</option>
             <option :value="'2'">SOURCE WATER</option>
           </select>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="">Award Date:</label>
           <input type="date" v-model="AwardDate" class="form-control">
-        </div>
-        <div class="form-group">
+        </div> -->
+        <!-- <div class="form-group">
           <label for="">Duration:</label>
           <input type="number" class="form-control">
-        </div>
+        </div> -->
         <div class="form-group">
           <button
             class="btn btn-primary"
@@ -74,6 +87,7 @@ export default {
 
       programmes: [],
       programmeName: '',
+      programmeCode: '',
       SupervisingFirmID: '',
       loading: false,
       admin: false,
@@ -94,19 +108,26 @@ export default {
     },
 
     createProgramme() {
+      alert(this.SupervisingFirmID)
+      alert(this.programmeCode)
+
+      alert(this.programmeName)
+
+      // alert(this.SupervisingFirmID)
+
       const bodyFormData = new FormData()
 
-      bodyFormData.append('ProgramCode', Date().toLocaleString())
+      bodyFormData.append('ProgramCode', this.programCode)
 
       bodyFormData.append('ProgramName', this.programmeName)
 
-      bodyFormData.append('RequestType', 2)
+      bodyFormData.append('RequestType', 3)
 
       bodyFormData.append('SupervisingFirmID', this.SupervisingFirmID)
 
-      bodyFormData.append('LoginUserName', localStorage.getItem('userName'))
+      bodyFormData.append('LoginUserName', localStorage.getItem('UserName'))
 
-      bodyFormData.append('AwardDate', this.AwardDate)
+      // bodyFormData.append('AwardDate', this.AwardDate)
 
 
       this.loading = true

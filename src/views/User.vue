@@ -152,7 +152,7 @@ export default {
     getUser() {
       // alert(this.$route.params.id)
       axios({
-        url: `http://api.tpsapp.net/api/UserProfile/${this.$route.params.id}`,
+        url: `https://api.tpsapp.net/api/UserProfile/${this.$route.params.id}`,
         method: 'get',
 
       }).then(response => {

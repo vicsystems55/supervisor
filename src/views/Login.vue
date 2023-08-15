@@ -254,6 +254,7 @@ export default {
       })
     },
     login() {
+      
       const bodyFormData = new FormData()
 
       bodyFormData.append('UserName', this.userName)

@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div v-if="admin" class="card">
+    <div  class="card">
       <div class="card-body">
         <div class="col-md-6">
           <div class="form-group">
@@ -84,11 +84,11 @@
             <label for="">Programme:</label>
             <select
               id=""
-              name=""
+              v-model="ProgrammedID"
               class="form-control"
             >
-              <option value="1">
-                IWASH 2022
+              <option v-for="programme in programmes" :key="programme.id" :value="programme.programmeID">
+                {{programme.programName}}
               </option>
             </select>
           </div>
@@ -125,6 +125,8 @@ export default {
       ContractDuration: '',
       CreatedByUserName: '',
       ProgrammedID: '',
+      programmes: [],
+      ProgrammedID: '',
 
       loading: false,
       admin: false,
@@ -135,9 +137,12 @@ export default {
     this.getContracts()
     if (localStorage.getItem('defaultRole') != 2) {
 
-this.admin = true;
+this.admin = false;
 
 }
+  },
+  mounted() {
+    this.getProgrammes()
   },
   methods: {
     getContracts() {
@@ -161,19 +166,21 @@ this.admin = true;
 
       alert(this.AwardDate)
       alert(this.ContractDuration)
+      alert(this.ProgrammedID)
 
       const bodyFormData = new FormData()
 
       bodyFormData.append('ContractDescription', this.ContractDescription)
+
       bodyFormData.append('ContractRefNo', this.ContractRefNo)
 
       bodyFormData.append('AwardDate', this.AwardDate)
 
       bodyFormData.append('ContractDuration', this.ContractDuration)
 
-      bodyFormData.append('CreatedByUserName', localStorage.getItem('userName'))
+      bodyFormData.append('CreatedByUserName', localStorage.getItem('UserName'))
 
-      bodyFormData.append('ProgrammedID', 1)
+      bodyFormData.append('ProgrammedID', this.ProgrammedID)
 
 
 
@@ -201,6 +208,32 @@ this.admin = true;
         alert(err)
       })
     },
+
+    getProgrammes(){
+
+      axios({
+        url: 'https://api.tpsapp.net/api/Programme',
+        method: 'get',
+        // data: bodyFormData
+        // data: {
+        //   ContractDescription: this.ContractDescription,
+        //   ContractRefNo: this.ContractRefNo,
+        //   AwardDate: this.AwardDate,
+        //   ContractDuration: this.ContractDuration,
+        //   CreatedByUserName: localStorage.getItem('UserName'),
+        //   ProgrammedID: 1,
+        // },
+
+      }).then(response => {
+      this.programmes = response.data
+      
+        console.log(response)
+        console.log('got it')
+      }).catch(err => {
+        alert(err)
+      })
+
+    }
   },
 }
 </script>
