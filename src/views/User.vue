@@ -122,7 +122,7 @@ export default {
       bodyFormData.append('RequestType', '5')
 
       axios({
-        url: 'http://api.tpsapp.net/api/UserProfile',
+        url: 'https://api.tpsapp.net/api/UserProfile',
         method: 'post',
         data: bodyFormData,
 

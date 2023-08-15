@@ -160,7 +160,7 @@ export default {
 
     if (localStorage.getItem('defaultRole') != 2) {
 
-      this.admin = true;
+      this.admin = true
       
     }
   },
