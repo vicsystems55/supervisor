@@ -16,10 +16,7 @@
           </thead>
           <tbody>
 
-            <tr
-              v-for="contract,key in contracts"
-              :key="contract.id"
-            >
+            <tr v-for="contract, key in contracts" :key="contract.id">
               <td>
                 {{ key + 1 }}
               </td>
@@ -28,10 +25,7 @@
               </td>
               <td>{{ contract.awardDate }}</td>
               <td>
-                <router-link
-                  :to="'/contract/'+contract.contractID"
-                  class="btn btn-sm btn-primary"
-                >
+                <router-link :to="'/contract/' + contract.contractID" class="btn btn-sm btn-primary">
                   view</router-link>
               </td>
             </tr>
@@ -41,64 +35,41 @@
       </div>
     </div>
 
-    <div  class="card">
+    <div class="card">
       <div class="card-body">
         <div class="col-md-6">
           <div class="form-group">
             <label for="">Contract Description:</label>
-            <input
-              v-model="ContractDescription"
-              type="text"
-              class="form-control"
-            >
+            <input v-model="ContractDescription" type="text" class="form-control">
           </div>
 
           <div class="form-group">
             <label for="">Contract RefNo:</label>
-            <input
-              v-model="ContractRefNo"
-              type="text"
-              class="form-control"
-            >
+            <input v-model="ContractRefNo" type="text" class="form-control">
           </div>
 
           <div class="form-group">
             <label for="">Award Date:</label>
-            <input
-              v-model="AwardDate"
-              type="date"
-              class="form-control"
-            >
+            <input v-model="AwardDate" type="date" class="form-control">
           </div>
 
           <div class="form-group">
             <label for="">Duration:</label>
-            <input
-              v-model="ContractDuration"
-              type="number"
-              class="form-control"
-            >
+            <input v-model="ContractDuration" type="number" class="form-control">
           </div>
 
           <div class="form-group">
             <label for="">Programme:</label>
-            <select
-              id=""
-              v-model="ProgrammedID"
-              class="form-control"
-            >
+            <select id="" v-model="ProgrammedID" class="form-control">
               <option v-for="programme in programmes" :key="programme.id" :value="programme.programmeID">
-                {{programme.programName}}
+                {{ programme.programName }}
               </option>
             </select>
           </div>
 
           <div class="form-group">
-            <button
-              class="btn btn-primary"
-              @click="createContract()"
-            >
-              {{ loading?'Please wait...':'Submit' }}
+            <button class="btn btn-primary" @click="createContract()">
+              {{ loading ? 'Please wait...' : 'Submit' }}
             </button>
           </div>
         </div>
@@ -134,29 +105,36 @@ export default {
     }
   },
   mounted() {
+    this.getProgrammes()
+
     this.getContracts()
+
     if (localStorage.getItem('defaultRole') != 2) {
 
-this.admin = false;
+      this.admin = false;
 
-}
-  },
-  mounted() {
-    this.getProgrammes()
+    }
   },
   methods: {
     getContracts() {
+
+     
+
+
       axios({
         url: 'https://api.tpsapp.net/api/Contract',
         method: 'get',
 
       }).then(response => {
+
         this.contracts = response.data
         console.log(response)
-        console.log('got it')
+        console.log('got contracts')
       }).catch(err => {
         console.log(err)
       })
+
+
     },
 
     createContract() {
@@ -200,8 +178,8 @@ this.admin = false;
         // },
 
       }).then(response => {
-      this.loading = false
-      this.getContracts()
+        this.loading = false
+        this.getContracts()
         console.log(response)
         console.log('got it')
       }).catch(err => {
@@ -209,7 +187,7 @@ this.admin = false;
       })
     },
 
-    getProgrammes(){
+    getProgrammes() {
 
       axios({
         url: 'https://api.tpsapp.net/api/Programme',
@@ -225,8 +203,8 @@ this.admin = false;
         // },
 
       }).then(response => {
-      this.programmes = response.data
-      
+        this.programmes = response.data
+
         console.log(response)
         console.log('got it')
       }).catch(err => {

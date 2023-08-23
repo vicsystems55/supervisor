@@ -700,7 +700,7 @@ export default {
 
     getSiteImages() {
       axios({
-        url: `http://api.tpsapp.net/api/Supervisions/GetCheckListExcelPictures/${this.$route.params.id}`,
+        url: `https://api.tpsapp.net/api/Supervisions/GetCheckListExcelPictures/${this.$route.params.id}`,
         method: 'get',
 
 
