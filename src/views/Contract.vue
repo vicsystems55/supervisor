@@ -664,7 +664,7 @@ export default {
     uploadBOQ(ContractFacilityTypeID) {
       this.upload_loading = true
 
-      // alert(ContractFacilityTypeID)
+      alert(ContractFacilityTypeID)
 
       const bodyFormData = new FormData()
       bodyFormData.append('formFile', this.file)
