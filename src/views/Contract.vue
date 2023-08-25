@@ -127,6 +127,28 @@
 
             <app-collapse accordion>
               <app-collapse-item
+                title="LOT 1"
+                class="border"
+              >
+                <div>
+
+                  LOT 1
+                </div>
+              </app-collapse-item>
+
+              <app-collapse-item
+                title="LOT 2"
+                class="border"
+              >
+                <div>
+
+                  LOT 2
+                </div>
+              </app-collapse-item>
+            </app-collapse>
+
+            <app-collapse accordion>
+              <app-collapse-item
                 title="Review Sites"
                 class="border"
               >
@@ -390,7 +412,7 @@
               </app-collapse-item>
               <app-collapse-item
                 title="Review BOQ Items"
-                class="border"
+                class="border "
               >
 
                 <div class="py-2 table-responsive">
@@ -563,6 +585,10 @@ export default {
 
       publish_loading: false,
 
+      keysCount: {},
+
+      collectedValues: [],
+
     }
   },
   mounted() {
@@ -677,7 +703,6 @@ export default {
         this.upload_loading = false
         alert('BOQ Uploaded!!')
 
-
         // this.getContractFacilities()
         console.log(response)
       }).catch(err => {
@@ -710,7 +735,25 @@ export default {
       }).then(response => {
         this.excelImportLocations = response.data.excelImportLocations
         this.excelImportBoQs = response.data.excelImportBoQs
-        console.log(response)
+
+        alert('loading boq items')
+
+        // eslint-disable-next-line no-restricted-syntax
+        for (const key in this.excelImportBoQs) {
+          if (this.excelImportBoQs.hasOwnProperty(key)) {
+            if (key === 'lotSNo') {
+              this.collectedValues.push(this.excelImportBoQs[key])
+            }
+            // eslint-disable-next-line no-undef
+            traverse(this.excelImportBoQs[key])
+          }
+        }
+
+        alert('showing group')
+        // eslint-disable-next-line no-unused-expressions
+        console.log(this.collectedValues),
+
+        console.log(this.excelImportBoQs)
       }).catch(err => {
         alert(err)
       })

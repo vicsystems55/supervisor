@@ -3,6 +3,7 @@
     <div class="card">
       <div class="card-body d-flex justify-content-between">
         <div class="c">
+          <h6>UPdate</h6>
           <h2>{{programmes[0].programName}}</h2>
           <h6>{{programmes[0].programCode}}</h6>
           <h6 class="text-muted text-italic">Current Programme</h6>
