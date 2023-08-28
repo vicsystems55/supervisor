@@ -687,11 +687,13 @@ export default {
     }
   },
   mounted() {
+
     this.getSiteDetails()
 
     this.getChecklist()
 
     this.getSiteImages()
+    
   },
   methods: {
     fixImage(imgUrl) {

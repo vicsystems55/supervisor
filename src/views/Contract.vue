@@ -9,11 +9,7 @@
         <div class="row">
           <div class="col-md-6">
             <h6>Active Facilities:</h6>
-            <div
-              v-for="contractFacility in contractFacilities"
-              :key="contractFacility.id"
-              class="form-group"
-            >
+            <div v-for="contractFacility in contractFacilities" :key="contractFacility.id" class="form-group">
               <button class="btn btn-primary btn-block">
                 {{ contractFacility.facilityName }}
               </button>
@@ -23,17 +19,8 @@
             <div class="form-group">
               <label for="">Select Facility Type</label>
 
-              <select
-                id=""
-                v-model="selFacilityTypeID"
-                name=""
-                class="form-control"
-              >
-                <option
-                  v-for="facility in facilities"
-                  :key="facility.id"
-                  :value="facility.facilityTypeID"
-                >
+              <select id="" v-model="selFacilityTypeID" name="" class="form-control">
+                <option v-for="facility in facilities" :key="facility.id" :value="facility.facilityTypeID">
                   {{ facility.facilityName }}
                 </option>
               </select>
@@ -59,10 +46,7 @@
 
             </div>
             <div class="form-group">
-              <button
-                class="btn btn-primary"
-                @click="mapFacility()"
-              >
+              <button class="btn btn-primary" @click="mapFacility()">
                 Add Facility
               </button>
             </div>
@@ -74,50 +58,31 @@
 
     <div class="card ">
       <div class="card-body">
-        <b-tabs
-          content-class="pt-1"
-        >
-          <b-tab
-            v-for="contractFacility in contractFacilities"
-            :key="contractFacility.id"
+        <b-tabs content-class="pt-1">
+          <b-tab v-for="contractFacility in contractFacilities" :key="contractFacility.id"
             :title="(contractFacility.facilityName) + contractFacility.contractFacilityTypeID"
-
-            @click="getContractFacilityBOQ(contractFacility.contractFacilityTypeID)"
-          >
+            @click="getContractFacilityBOQ(contractFacility.contractFacilityTypeID)">
 
             <div class="col-md-6 py-3">
               <div>
 
                 <!-- Accept specific image formats by extension -->
-                <label
-                  for="extension"
-                  class="mt-1"
-                >Upload BOQ</label> <br>
+                <label for="extension" class="mt-1">Upload BOQ</label> <br>
                 <div class="">
-                  <input
-                    :id="'customFile'+contractFacility.contractFacilityTypeID"
-                    :ref="'file'+contractFacility.contractFacilityTypeID"
-                    type="file"
-                    @change="previewFile4"
-                  >
+                  <input :id="'customFile' + contractFacility.contractFacilityTypeID"
+                    :ref="'file' + contractFacility.contractFacilityTypeID" type="file" @change="previewFile4">
                 </div>
               </div>
 
               <div class="form-group py-2">
-                <button
-                  class="btn btn-primary"
-                  @click="uploadBOQ(contractFacility.contractFacilityTypeID)"
-                >
-                  {{ upload_loading?'Uploading...':'Upload' }}
+                <button class="btn btn-primary" @click="uploadBOQ(contractFacility.contractFacilityTypeID)">
+                  {{ upload_loading ? 'Uploading...' : 'Upload' }}
 
                 </button>
 
                 <div class="form-group py-3">
-                  <button
-                    class="btn btn-success"
-                    @click="publishBoq(contractFacility.contractFacilityTypeID)"
-                  >
-                    {{ publish_loading?'Publishing...':'Publish BOQ' }}
+                  <button class="btn btn-success" @click="publishBoq(contractFacility.contractFacilityTypeID)">
+                    {{ publish_loading ? 'Publishing...' : 'Publish BOQ' }}
 
                   </button>
                 </div>
@@ -125,38 +90,74 @@
               </div>
             </div>
 
+            <h4 class="font-weight-bold">CONTRACT LOTS</h4>
+
             <app-collapse accordion>
-              <app-collapse-item
-                title="LOT 1"
-                class="border"
-              >
+              <app-collapse-item v-for="collectedLot in collectedLots" :key="collectedLot.index" :title="collectedLot"
+                class="border">
                 <div>
 
-                  LOT 1
+                  <div class="py-2 table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Description</th>
+                          <th>Unit</th>
+                          <th>Qty</th>
+                          <th>Num</th>
+                          <th>Length</th>
+
+                          <th>Rate</th>
+                          <th>Total</th>
+                          <th />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="excelImportBoQ in excelImportBoQs" :key="excelImportBoQ.id">
+                          <td>1</td>
+                          <td>
+                            <textarea type="text" class="form-control" :value="excelImportBoQ.description" />
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" :value="excelImportBoQ.unit">
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" :value="excelImportBoQ.qty">
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" :value="excelImportBoQ.num">
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" :value="excelImportBoQ.lentght">
+                          </td>
+
+                          <td>
+                            <input type="text" class="form-control" :value="excelImportBoQ.rate">
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" :value="excelImportBoQ.amount">
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-primary" @click="updateSite()">
+                              update
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
                 </div>
               </app-collapse-item>
 
-              <app-collapse-item
-                title="LOT 2"
-                class="border"
-              >
-                <div>
 
-                  LOT 2
-                </div>
-              </app-collapse-item>
             </app-collapse>
 
             <app-collapse accordion>
-              <app-collapse-item
-                title="Review Sites"
-                class="border"
-              >
+              <app-collapse-item title="Review Sites" class="border d-none">
                 <div class="table-responsive">
-                  <table
-                    style="font-size: 70%;"
-                    class="table py-3 table-striped d-none"
-                  >
+                  <table style="font-size: 70%;" class="table py-3 table-striped d-none">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -181,37 +182,20 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        v-for="excelImportLocation in excelImportLocations"
-                        :key="excelImportLocation.id"
-                      >
+                      <tr v-for="excelImportLocation in excelImportLocations" :key="excelImportLocation.id">
                         <td>
                           1
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportLocation.location"
-                          >
+                          <input type="text" class="form-control" :value="excelImportLocation.location">
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportLocation.ward"
-                          >
+                          <input type="text" class="form-control" :value="excelImportLocation.ward">
                         </td>
                         <td>
                           <select class="form-control">
-                            <option
-                              v-for="lga in lgas"
-                              :key="lga.id"
-                              value=""
-                              :selected="
-                                (excelImportLocation.lga)==
-                                  lga.lgaName?'yes':''"
-                            >
+                            <option v-for="lga in lgas" :key="lga.id" value="" :selected="(excelImportLocation.lga) ==
+                              lga.lgaName ? 'yes' : ''">
                               {{ lga.lgaName }}
                             </option>
                           </select>
@@ -219,29 +203,16 @@
                         <td>
                           <div class="form-group">
 
-                            <select
-                              id=""
-                              name=""
-                              class="form-control"
-                            >
-                              <option
-                                v-for="state in states"
-                                :key="state.id"
-                                value=""
-                                :selected="
-                                  state.stateName?'yes':''"
-                              >
+                            <select id="" name="" class="form-control">
+                              <option v-for="state in states" :key="state.id" value=""
+                                :selected="state.stateName ? 'yes' : ''">
                                 {{ state.stateName }}
                               </option>
                             </select>
                           </div>
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportLocation.contractorName"
-                          >
+                          <input type="text" class="form-control" :value="excelImportLocation.contractorName">
                         </td>
                         <td>
                           <div class="form-group">
@@ -261,41 +232,24 @@
                   </table>
 
                   <div class="row">
-                    <div
-                      v-for="excelImportLocation in excelImportLocations"
-                      :key="excelImportLocation.id"
-                      class="col-md-4"
-                    >
+                    <div v-for="excelImportLocation in excelImportLocations" :key="excelImportLocation.id"
+                      class="col-md-4">
 
                       <div class="card">
                         <div class="card-body">
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              :value="excelImportLocation.location"
-                            >
+                            <input type="text" class="form-control" :value="excelImportLocation.location">
 
                           </div>
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              :value="excelImportLocation.ward"
-                            >
+                            <input type="text" class="form-control" :value="excelImportLocation.ward">
 
                           </div>
 
                           <div class="form-group">
                             <select class="form-control">
-                              <option
-                                v-for="lga in lgas"
-                                :key="lga.id"
-                                value=""
-                                :selected="
-                                  (excelImportLocation.lga)==
-                                    lga.lgaName?'yes':''"
-                              >
+                              <option v-for="lga in lgas" :key="lga.id" value="" :selected="(excelImportLocation.lga) ==
+                                lga.lgaName ? 'yes' : ''">
                                 {{ lga.lgaName }}
                               </option>
                             </select>
@@ -304,41 +258,25 @@
 
                           <div class="form-group">
 
-                            <select
-                              id=""
-                              name=""
-                              class="form-control"
-                            >
-                              <option
-                                v-for="state in states"
-                                :key="state.id"
-                                value=""
-                                :selected="
-                                  state.stateName?'yes':''"
-                              >
+                            <select id="" name="" class="form-control">
+                              <option v-for="state in states" :key="state.id" value=""
+                                :selected="state.stateName ? 'yes' : ''">
                                 {{ state.stateName }}
                               </option>
                             </select>
                           </div>
 
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              :value="excelImportLocation.contractorName"
-                            >
+                            <input type="text" class="form-control" :value="excelImportLocation.contractorName">
                           </div>
 
-                          <button
-                            class="btn btn-sm btn-primary"
-                            @click="updateSite(
-                              excelImportLocation.location,
-                              excelImportLocation.ward,
-                              excelImportLocation.lga,
-                              excelImportLocation.stateName,
-                              excelImportLocation.contractorName
-                            )"
-                          >
+                          <button class="btn btn-sm btn-primary" @click="updateSite(
+                            excelImportLocation.location,
+                            excelImportLocation.ward,
+                            excelImportLocation.lga,
+                            excelImportLocation.stateName,
+                            excelImportLocation.contractorName
+                          )">
                             update..
                           </button>
 
@@ -356,25 +294,14 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="">Site Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                          >
+                          <input type="text" class="form-control">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="">LGA</label>
-                          <select
-                            id=""
-                            name=""
-                            class="form-control"
-                          >
-                            <option
-                              v-for="lga in lgas"
-                              :key="lga.id"
-                              value=""
-                            >
+                          <select id="" name="" class="form-control">
+                            <option v-for="lga in lgas" :key="lga.id" value="">
                               {{ lga.lgaName }}
                             </option>
                           </select>
@@ -383,16 +310,8 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="">LGA</label>
-                          <select
-                            id=""
-                            name=""
-                            class="form-control"
-                          >
-                            <option
-                              v-for="state in states"
-                              :key="state.id"
-                              value=""
-                            >
+                          <select id="" name="" class="form-control">
+                            <option v-for="state in states" :key="state.id" value="">
                               {{ state.stateName }}
                             </option>
                           </select>
@@ -410,10 +329,7 @@
                 </div>
 
               </app-collapse-item>
-              <app-collapse-item
-                title="Review BOQ Items"
-                class="border "
-              >
+              <app-collapse-item title="Review BOQ Items" class="border d-none">
 
                 <div class="py-2 table-responsive">
                   <table class="table">
@@ -432,66 +348,32 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        v-for="excelImportBoQ in excelImportBoQs"
-                        :key="excelImportBoQ.id"
-                      >
+                      <tr v-for="excelImportBoQ in excelImportBoQs" :key="excelImportBoQ.id">
                         <td>1</td>
                         <td>
-                          <textarea
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.description"
-                          />
+                          <textarea type="text" class="form-control" :value="excelImportBoQ.description" />
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.unit"
-                          >
+                          <input type="text" class="form-control" :value="excelImportBoQ.unit">
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.qty"
-                          >
+                          <input type="text" class="form-control" :value="excelImportBoQ.qty">
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.num"
-                          >
+                          <input type="text" class="form-control" :value="excelImportBoQ.num">
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.lentght"
-                          >
+                          <input type="text" class="form-control" :value="excelImportBoQ.lentght">
                         </td>
 
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.rate"
-                          >
+                          <input type="text" class="form-control" :value="excelImportBoQ.rate">
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            :value="excelImportBoQ.amount"
-                          >
+                          <input type="text" class="form-control" :value="excelImportBoQ.amount">
                         </td>
                         <td>
-                          <button
-                            class="btn btn-sm btn-primary"
-                            @click="updateSite()"
-                          >
+                          <button class="btn btn-sm btn-primary" @click="updateSite()">
                             update
                           </button>
                         </td>
@@ -587,7 +469,9 @@ export default {
 
       keysCount: {},
 
-      collectedValues: [],
+      collectedLots: [],
+
+
 
     }
   },
@@ -738,22 +622,32 @@ export default {
 
         alert('loading boq items')
 
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key in this.excelImportBoQs) {
-          if (this.excelImportBoQs.hasOwnProperty(key)) {
-            if (key === 'lotSNo') {
-              this.collectedValues.push(this.excelImportBoQs[key])
-            }
-            // eslint-disable-next-line no-undef
-            traverse(this.excelImportBoQs[key])
-          }
-        }
+        this.excelImportBoQs.forEach(element => {
+          if (Object.prototype.hasOwnProperty.call(element, 'lotSNo') && element.contractFacilityTypeID === ContractFacilityTypeID) {
 
-        alert('showing group')
-        // eslint-disable-next-line no-unused-expressions
-        console.log(this.collectedValues),
+            if (!this.collectedLots.includes(element.lotSNo)) {
+              this.collectedLots.push(element.lotSNo)
+            }
+          }
+        })
+
+        console.log(this.collectedLots)
+        // eslint-disable-next-line no-restricted-syntax
+        // for (key in this.excelImportBoQs) {
+        // if (this.excelImportBoQs.hasOwnProperty(key)) {
+        //   if (key === 'lotSNo') {
+        //     this.collectedValues.push(this.excelImportBoQs[key])
+        //   }
+        //   // eslint-disable-next-line no-undef
+        //   traverse(this.excelImportBoQs[key])
+        // }
+        // }
+
+        // // eslint-disable-next-line no-unused-expressions
+        // console.log(this.collectedValues),
 
         console.log(this.excelImportBoQs)
+        return this.collectedLots
       }).catch(err => {
         alert(err)
       })
@@ -802,6 +696,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
