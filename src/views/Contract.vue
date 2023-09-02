@@ -528,7 +528,7 @@ export default {
 
     getLGAs() {
       axios({
-        url: 'https://api.tpsapp.net/api/LGA',
+        url: 'https://api.tpsapp.net/api/Lga/StateLGAs/5',
         method: 'get',
       }).then(response => {
         this.lgas = response.data
@@ -580,7 +580,7 @@ export default {
       bodyFormData.append('formFile', this.file)
       bodyFormData.append('ContractFacilityTypeID', ContractFacilityTypeID)
       axios({
-        url: 'https://api.tpsapp.net/api/BOQImport',
+        url: `https://api.tpsapp.net/api/BOQImport/${ ContractFacilityTypeID}`,
         method: 'post',
         data: bodyFormData,
       }).then(response => {
