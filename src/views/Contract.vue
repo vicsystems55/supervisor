@@ -489,7 +489,7 @@ export default {
   },
   methods: {
     downloadMeasurementform(lotId) {
-      alert(lotId)
+      // alert(lotId)
       axios({
         url: `https://api.tpsapp.net/api/Supervisions/DownLoadSiteMeasurementExcel/${lotId}`,
         method: 'get',
@@ -510,7 +510,7 @@ export default {
         method: 'get',
 
       }).then(response => {
-        alert('cont')
+        // alert('cont')
         this.contract = response.data
         console.log(response)
       }).catch(err => {
@@ -634,7 +634,7 @@ export default {
     },
 
     getContractFacilityBOQ(ContractFacilityTypeID) {
-      alert('loading facility details')
+      // alert('loading facility details')
       axios({
         url: `https://api.tpsapp.net/api/BOQImport/${ContractFacilityTypeID}`,
         method: 'get',
