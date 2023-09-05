@@ -76,6 +76,38 @@
           </button>
 
           <div
+            class="dat"
+            style="max-width: 340px;"
+          >
+            <div class="form-group">
+              <label for="">Date Modified</label>
+              <input
+                type="date"
+                class="form-control"
+                v-model="dateMeasured"
+              >
+            </div>
+
+            <div class="form-group">
+              Upload Excel Measurement:
+              <input
+                type="file"
+                class="form-control"
+                @change="previewFile4"
+              >
+            </div>
+
+            <div class="form-group">
+              <button
+                class="btn btn-warning"
+                @click="uploadSiteMeasurement(lot.lotID)"
+              >
+                Upload Measurement
+              </button>
+            </div>
+          </div>
+
+          <div
             v-if="current_lot==lot.lotID"
             class="showz"
           >
@@ -190,8 +222,12 @@ export default {
       current_checklist_excel: '',
       current_supervision_excel: '',
 
+      dateMeasured: '',
+
       uploading_checklist: false,
       uploading_supervision: false,
+
+      measurementExcel: null,
     }
   },
   computed: {
@@ -221,6 +257,46 @@ export default {
         console.log('got it')
       }).catch(err => {
         console.log(err)
+      })
+    },
+
+    previewFile4(event) {
+      console.log(event)
+
+      if (event.target.files.length > 0) {
+        const src = URL.createObjectURL(event.target.files[0])
+        // const preview = document.getElementById('previewImg2')
+        // preview.src = src
+        // preview.style.display = "block";
+        // eslint-disable-next-line prefer-destructuring
+        this.measurementExcel = event.target.files[0]
+      }
+    },
+
+    uploadSiteMeasurement(lotId) {
+
+      // alert(lotId)
+
+      if(this.measurementExcel == null){
+
+        alert('No excel doc selected')
+
+      }
+      const bodyFormData = new FormData()
+
+      bodyFormData.append('LotID ', lotId)
+      bodyFormData.append('DateMeasured', this.dateMeasured)
+      bodyFormData.append('formFile', this.measurementExcel)
+
+      axios({
+        url: `https://api.tpsapp.net/api/Supervisions/UploadSiteMeasurementExcel/${lotId}`,
+        method: 'post',
+        data: bodyFormData,
+      }).then(response => {
+   
+        console.log(response)
+      }).catch(err => {
+        alert(err)
       })
     },
 

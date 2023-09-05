@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h4>{{ contract.contractDescription }}</h4>
+    <h4>{{ contract[0].contractDescription }}</h4>
 
     <div class="card">
       <div class="card-body table-responsive">
@@ -93,9 +93,13 @@
             <h4 class="font-weight-bold">CONTRACT LOTS</h4>
 
             <app-collapse accordion>
-              <app-collapse-item v-for="collectedLot in collectedLots" :key="collectedLot.index" :title="collectedLot"
+              <app-collapse-item v-for="collectedLot,index in collectedLots" :key="collectedLot.index" :title="collectedLot"
                 class="border">
                 <div>
+
+                  <div class="text-center py-2">
+                    <button @click="downloadMeasurementform(contract[index].lotID)" class="btn btn-primary">Download Mearsurement Form</button>
+                  </div>
 
                   <div class="py-2 table-responsive">
                     <table class="table">
@@ -109,15 +113,16 @@
                           <th>Length</th>
 
                           <th>Rate</th>
-                          <th>Total</th>
+                          <th>Total..</th>
                           <th />
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="excelImportBoQ in excelImportBoQs" :key="excelImportBoQ.id">
                           <td>1</td>
-                          <td>
-                            <textarea type="text" class="form-control" :value="excelImportBoQ.description" />
+                          <td style="width: 300px;">
+                            <textarea cols="15" rows="5" type="text" class="form-control"
+                              :value="excelImportBoQ.description" />
                           </td>
                           <td>
                             <input type="text" class="form-control" :value="excelImportBoQ.unit">
@@ -343,15 +348,15 @@
                         <th>Length</th>
 
                         <th>Rate</th>
-                        <th>Total</th>
+                        <th>Total..</th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="excelImportBoQ in excelImportBoQs" :key="excelImportBoQ.id">
                         <td>1</td>
-                        <td>
-                          <textarea type="text" class="form-control" :value="excelImportBoQ.description" />
+                        <td style="width: 200px;">
+                          <textarea cols="5" type="text" class="form-control" :value="excelImportBoQ.description" />
                         </td>
                         <td>
                           <input type="text" class="form-control" :value="excelImportBoQ.unit">
@@ -401,7 +406,7 @@
 
 import axios from 'axios'
 import {
-  BTabs, BTab, BCardText, BFormFile,
+  BTabs, BTab,
 } from 'bootstrap-vue'
 import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
 import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
@@ -409,9 +414,9 @@ import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
 export default {
   components: {
     BTabs,
-    BCardText,
+  
     BTab,
-    BFormFile,
+
     AppCollapse,
     AppCollapseItem,
 
@@ -419,7 +424,7 @@ export default {
   data() {
     return {
 
-      contract: '',
+      contract: [],
 
       facilities: [],
 
@@ -483,12 +488,29 @@ export default {
     this.getStates()
   },
   methods: {
+    downloadMeasurementform(lotId) {
+      alert(lotId)
+      axios({
+        url: `https://api.tpsapp.net/api/Supervisions/DownLoadSiteMeasurementExcel/${lotId}`,
+        method: 'get',
+      }).then(response => {
+        const anchor = document.createElement('a')
+        anchor.href = `https://api.tpsapp.net/${response.data}`
+        anchor.target = '_blank'
+        anchor.download = 'measurement'
+        anchor.click()
+        console.log(response)
+      }).catch(err => {
+        alert(err)
+      })
+    },
     getContract() {
       axios({
-        url: `https://api.tpsapp.net/api/Contract/${this.$route.params.id}`,
+        url: `https://api.tpsapp.net/api/Supervisions/GetContractSupervisionSites/${this.$route.params.id}`,
         method: 'get',
 
       }).then(response => {
+        alert('cont')
         this.contract = response.data
         console.log(response)
       }).catch(err => {
@@ -580,7 +602,7 @@ export default {
       bodyFormData.append('formFile', this.file)
       bodyFormData.append('ContractFacilityTypeID', ContractFacilityTypeID)
       axios({
-        url: `https://api.tpsapp.net/api/BOQImport/${ ContractFacilityTypeID}`,
+        url: `https://api.tpsapp.net/api/BOQImport/${ContractFacilityTypeID}`,
         method: 'post',
         data: bodyFormData,
       }).then(response => {
@@ -646,7 +668,7 @@ export default {
         // // eslint-disable-next-line no-unused-expressions
         // console.log(this.collectedValues),
 
-        console.log(this.excelImportBoQs)
+        console.log(response)
         return this.collectedLots
       }).catch(err => {
         alert(err)
