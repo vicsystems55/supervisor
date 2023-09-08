@@ -173,7 +173,7 @@ export default {
       this.admin = true
       this.getAllSites()
     } else {
-      this.getMySites()
+      this.getAllSites()
     }
 
     this.getUsers()
