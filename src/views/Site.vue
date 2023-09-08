@@ -757,7 +757,7 @@ export default {
         //   bodyFormData.append(siteSupervision.fielsCheckBoxName, 'OFF')
         // })
       }).catch(err => {
-        alert(err)
+        // alert(err)
       })
     },
 
@@ -786,7 +786,7 @@ export default {
 
         this.locationID = response.data.locationID
       }).catch(err => {
-        alert(err)
+        // alert(err)
       })
     },
 
