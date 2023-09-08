@@ -194,7 +194,7 @@ export default {
 
     getMySites() {
       axios({
-        url: `http://api.tpsapp.net/api/Supervisions/GetSupervisorSites/${localStorage.getItem('userID')}`,
+        url: `https://api.tpsapp.net/api/Supervisions/GetSupervisorSites/${localStorage.getItem('userID')}`,
         method: 'get',
 
       }).then(response => {
