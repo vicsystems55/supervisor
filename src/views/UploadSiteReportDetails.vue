@@ -293,6 +293,8 @@ export default {
         method: 'post',
         data: bodyFormData,
       }).then(response => {
+
+        alert('Measurements Uploaded.');
    
         console.log(response)
       }).catch(err => {
